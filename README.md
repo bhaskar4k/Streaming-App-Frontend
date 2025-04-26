@@ -1,8 +1,16 @@
-# React + Vite
+<h1 style="text-align: center; margin: 0; background-color: #e6e6e6; border-radius: 10px; padding: 20px;">Streaming-App-Frontend</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+<h3 style="border-bottom: 2px solid black;">Versions</h3>
+<b>Node :</b> v22.12.0 <br>
+<b>NPM :</b> v10.9.0 <br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h3 style="border-bottom: 2px solid black;">Get Started</h3>
+<ul>
+    <li><code><b>$ git clone https://github.com/bhaskar4k/Streaming-App-Frontend.git</b></code></li>
+    <li><code><b>$ cd Streaming-App-Frontend</b></code></li>
+    <li><code><b>$ npm i</b></code></li>
+    <li><code><b>$ npm run dev</b></code></li>
+</ul>
+
+<p>And you're done....... 😉</p>
