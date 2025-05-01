@@ -14,8 +14,9 @@ function WatchVideo() {
     const guid = searchParams.get("v");
     const playback = searchParams.get("playback") || 0;
 
-    const playerURL = "http://localhost:8092/streaming/video_file/"+guid;
-    const [videoBlobUrl, setVideoBlobUrl] = useState(null);
+    const playerURL = "http://localhost:8092/streaming/video_file/" + guid;
+    const [videoBlobUrls, setVideoBlobUrls] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const streamingService = new StreamingService();
 
@@ -24,22 +25,18 @@ function WatchVideo() {
     const [is_processed, set_is_processed] = useState(true);
     const [channel_name, set_channel_name] = useState("");
     const [video_title, set_video_title] = useState("");
+    const [video_duration, set_video_duration] = useState(0);
+    const [chunk_count, set_chunk_count] = useState(0);
+    const [video_resolution, set_video_resolution] = useState([]);
     const [video_description, set_video_description] = useState("");
     const [video_upload_at, set_video_upload_at] = useState("");
 
-    useEffect(() => {
-        const fetchVideo = async () => {
-          const response = await fetch(`http://localhost:8092/streaming/video_file/${guid}`, {
-            method: 'GET',
-          });
-    
-          const blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          setVideoBlobUrl(blobUrl);
-        };
-    
-        fetchVideo();
-      }, [guid]);
+
+    const handleEnded = () => {
+        if (currentIndex < videoBlobUrls.length - 1) {
+            setCurrentIndex(prev => prev + 1);
+        }
+    };
 
 
     useEffect(() => {
@@ -47,13 +44,15 @@ function WatchVideo() {
             try {
                 const response = await streamingService.VideoFileInfo(guid);
                 let data = response.data;
-                console.log(data)
 
                 set_channel_name(data.channel);
                 set_video_title(data.title);
                 set_video_description(data.description);
                 set_is_processed(data.properlyProcessed);
                 set_video_upload_at(data.trans_datetime);
+                set_video_duration(data.videoDuration);
+                set_chunk_count(data.chunkCount);
+                set_video_resolution(data.videoResolutions);
             } catch (error) {
                 console.error("Error fetching video info:", error);
             }
@@ -61,6 +60,34 @@ function WatchVideo() {
 
         fetchVideoInfo();
     }, [guid]);
+
+
+    useEffect(() => {
+        const fetchAndMergeBlobs = async () => {
+            const blobParts = [];
+
+            for (let i = 1; i <= chunk_count; i++) {
+                const res = await fetch(`http://localhost:8092/streaming/video_file/${guid}/${i}.mp4`);
+                const blob = await res.blob();
+                console.log(`Fetched chunk ${i}`, blob);
+                blobParts.push(blob);
+            }
+
+            const mergedBlob = new Blob(blobParts, { type: 'video/mp4' });
+            const blobUrl = URL.createObjectURL(mergedBlob);
+            console.log("Final blob URL:", blobUrl); // should start with 'blob:'
+            setVideoBlobUrls(blobUrl);
+        };
+
+        fetchAndMergeBlobs();
+
+        return () => {
+            if (videoBlobUrls) {
+                URL.revokeObjectURL(videoBlobUrls);
+            }
+        };
+    }, [guid, chunk_count]);
+
 
     useEffect(() => {
         const likeButton = document.getElementById("video_player_info_action_like");
@@ -106,11 +133,12 @@ function WatchVideo() {
             <div className="video_player_container">
                 <div id="video_player">
                     {!is_processed && <span className="processing_error">Video is not yet processed.</span>}
-                    <ReactPlayer 
-                        url={videoBlobUrl} 
-                        controls={true} 
-                        width='100%' 
-                        height='100%' 
+                    <ReactPlayer
+                        url={videoBlobUrls}
+                        controls
+                        playing
+                        width="100%"
+                        height="100%"
                     />
                 </div>
 
@@ -148,7 +176,6 @@ function WatchVideo() {
                     </span>
                 </div>
             </div>
-
         </>
     );
 }
