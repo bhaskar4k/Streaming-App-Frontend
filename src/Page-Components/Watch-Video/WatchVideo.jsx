@@ -15,7 +15,9 @@ function WatchVideo() {
     const playback = searchParams.get("playback") || 0;
 
     const playerURL = "http://localhost:8092/streaming/video_file/" + guid;
-    const [videoBlobUrls, setVideoBlobUrls] = useState(null);
+    const [videoBlobUrls, setVideoBlobUrls] = useState([]);
+    const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const streamingService = new StreamingService();
@@ -75,7 +77,7 @@ function WatchVideo() {
             // Revoke previous blob URL to avoid memory leaks
             if (videoBlobUrls) {
                 URL.revokeObjectURL(videoBlobUrls);
-                setVideoBlobUrls(null);
+                setVideoBlobUrls([]);
             }
 
             const blobParts = [];
@@ -93,7 +95,7 @@ function WatchVideo() {
                     }
 
                     const blob = await response.blob();
-                    blobParts.push(blob);
+                    blobParts.push(URL.revokeObjectURL(blob));
 
                 } catch (chunkError) {
                     console.error(`Error fetching chunk ${i}:`, chunkError);
@@ -104,9 +106,9 @@ function WatchVideo() {
             console.log("All chunks fetched, merging...");
 
             // Merge all blobs into a single video
-            const mergedBlob = new Blob(blobParts, { type: 'video/mp4' });
-            const blobUrl = URL.createObjectURL(mergedBlob);
-            setVideoBlobUrls(blobUrl);
+            // const mergedBlob = new Blob(blobParts, { type: 'video/mp4' });
+            // const blobUrl = URL.createObjectURL(mergedBlob);
+            setVideoBlobUrls(blobParts);
 
             console.log("Video successfully merged");
 
@@ -116,6 +118,17 @@ function WatchVideo() {
         }
     };
 
+    // useEffect(() => {
+    //     return () => {
+    //         videoBlobUrls.forEach(url => URL.revokeObjectURL(url));
+    //     };
+    // }, [videoBlobUrls]);
+
+    const handlePlayerEnded = () => {
+        if (currentChunkIndex < videoBlobUrls.length - 1) {
+            setCurrentChunkIndex(prevIndex => prevIndex + 1);
+        }
+    };
 
     useEffect(() => {
         const likeButton = document.getElementById("video_player_info_action_like");
@@ -162,11 +175,21 @@ function WatchVideo() {
                 <div id="video_player">
                     {!is_processed && <span className="processing_error">Video is not yet processed.</span>}
                     <ReactPlayer
-                        url={videoBlobUrls}
+                        url={videoBlobUrls[currentChunkIndex]}
                         controls
                         playing
                         width="100%"
                         height="100%"
+                        onEnded={handlePlayerEnded}
+                        config={{
+                            file: {
+                                forceVideo: true,
+                                attributes: {
+                                    controlsList: 'nodownload',
+                                    disablePictureInPicture: true
+                                }
+                            }
+                        }}
                     />
                 </div>
 
