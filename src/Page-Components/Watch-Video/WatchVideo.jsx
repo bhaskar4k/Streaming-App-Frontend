@@ -61,32 +61,60 @@ function WatchVideo() {
         fetchVideoInfo();
     }, [guid]);
 
-
     useEffect(() => {
-        const fetchAndMergeBlobs = async () => {
-            const blobParts = [];
+        fetchAndMergeChunks();
+    }, [guid, chunk_count]);
 
-            for (let i = 1; i <= chunk_count; i++) {
-                const res = await fetch(`http://localhost:8092/streaming/video_file/${guid}/${i}.mp4`);
-                const blob = await res.blob();
-                console.log(`Fetched chunk ${i}`, blob);
-                blobParts.push(blob);
-            }
 
-            const mergedBlob = new Blob(blobParts, { type: 'video/mp4' });
-            const blobUrl = URL.createObjectURL(mergedBlob);
-            console.log("Final blob URL:", blobUrl); // should start with 'blob:'
-            setVideoBlobUrls(blobUrl);
-        };
+    const fetchAndMergeChunks = async () => {
+        if (!guid || chunk_count <= 0) {
+            return;
+        }
 
-        fetchAndMergeBlobs();
-
-        return () => {
+        try {
+            // Revoke previous blob URL to avoid memory leaks
             if (videoBlobUrls) {
                 URL.revokeObjectURL(videoBlobUrls);
+                setVideoBlobUrls(null);
             }
-        };
-    }, [guid, chunk_count]);
+
+            const blobParts = [];
+
+            // Fetch all chunks in sequence
+            for (let i = 1; i <= chunk_count; i++) {
+                try {
+                    const chunkUrl = `http://localhost:8092/streaming/video_file/${guid}/${i}.mp4`;
+                    console.log(`Fetching chunk ${i}/${chunk_count}: ${chunkUrl}`);
+
+                    const response = await fetch(chunkUrl);
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch chunk ${i}: ${response.status} ${response.statusText}`);
+                    }
+
+                    const blob = await response.blob();
+                    blobParts.push(blob);
+
+                } catch (chunkError) {
+                    console.error(`Error fetching chunk ${i}:`, chunkError);
+                    throw new Error(`Failed to fetch chunk ${i}: ${chunkError.message}`);
+                }
+            }
+
+            console.log("All chunks fetched, merging...");
+
+            // Merge all blobs into a single video
+            const mergedBlob = new Blob(blobParts, { type: 'video/mp4' });
+            const blobUrl = URL.createObjectURL(mergedBlob);
+            setVideoBlobUrls(blobUrl);
+
+            console.log("Video successfully merged");
+
+        } catch (error) {
+            console.error("Error in fetch and merge process:", error);
+        } finally {
+        }
+    };
 
 
     useEffect(() => {
