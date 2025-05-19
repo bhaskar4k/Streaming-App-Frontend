@@ -1,1 +1,53 @@
-<h1>login works!</h1>
+<!-- login.component.html -->
+<div class="login-container">
+  <div class="login-child-container" id="login_child_container">
+
+    <!-- Sign Up Form -->
+    <div class="form-container sign-up-container">
+      <div class="form-div">
+        <h1>Create Account</h1>
+        <div class="social-container">
+          <a href="#" class="social"><img src="assets/images/google.svg"></a>
+        </div>
+        <span>or use your email for registration</span>
+        <input type="text" placeholder="First Name" [(ngModel)]="signUp.firstName">
+        <input type="text" placeholder="Last Name" [(ngModel)]="signUp.lastName">
+        <input type="email" placeholder="Email" [(ngModel)]="signUp.email">
+        <input type="password" placeholder="Password" [(ngModel)]="signUp.password">
+        <input type="password" placeholder="Confirm Password" [(ngModel)]="signUp.confirmPassword">
+        <button (click)="doSignUp()" class="signup_btn loginPageButtons">Sign Up</button>
+      </div>
+    </div>
+
+    <!-- Sign In Form -->
+    <div class="form-container sign-in-container">
+      <div class="form-div">
+        <h1>Sign in</h1>
+        <div class="social-container">
+          <a href="#" class="social"><img src="assets/images/google.svg"></a>
+        </div>
+        <span>or use your account</span>
+        <input type="email" placeholder="Email" [(ngModel)]="login.email">
+        <input type="password" placeholder="Password" [(ngModel)]="login.password">
+        <a href="#">Forgot your password?</a>
+        <button (click)="doLogin()" class="loginPageButtons">Sign In</button>
+      </div>
+    </div>
+
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="loginPageButtons ghost" (click)="togglePanel(false)">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="loginPageButtons ghost" (click)="togglePanel(true)">Sign Up</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
