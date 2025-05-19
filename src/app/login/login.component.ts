@@ -47,8 +47,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const JWT = localStorage.getItem("JWT");
-    if (JWT) {
+    if (this.authService.getToken()) {
       redirect_to_home();
     }
   }
@@ -158,7 +157,7 @@ export class LoginComponent implements OnInit {
         if (response.status === 200) {
           this.hideMatProgressBar();
           this.authService.setToken(response.data);
-          this.openDialog("Login", response.message, ResponseTypeColor.SUCCESS, 'layout');
+          this.openDialog("Login", response.message, ResponseTypeColor.SUCCESS, 'home');
           return;
         }
 

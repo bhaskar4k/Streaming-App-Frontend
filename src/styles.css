@@ -71,6 +71,10 @@ body {
     color: var(--default-theme);
 }
 
+.cursor_pointer{
+    cursor: pointer;
+}
+
 .mat-mdc-row,
 .mat-mdc-header-row,
 .mdc-data-table__content {

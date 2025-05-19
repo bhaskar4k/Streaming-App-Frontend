@@ -17,7 +17,7 @@ export async function get_ip_address() {
 }
 
 export function redirect_to_home(){
-    window.location.href = "layout";
+    window.location.href = "home";
 }
 
 export function go_back(navigate: any){
