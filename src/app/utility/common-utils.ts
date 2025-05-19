@@ -29,8 +29,8 @@ export function redirect_to_login(navigate: string){
     }, 500);
 }
 
-export function redirect_to_home(navigate: any){
-    navigate(`/home`);
+export function redirect_to_home(){
+    window.location.href = "layout";
 }
 
 export function go_back(navigate: string){

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout/layout.component';
+import { AuthenticationService } from './service/authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,16 @@ import { LayoutComponent } from './layout/layout.component';
 export class AppComponent implements OnInit, OnDestroy {
   IsLoggedIn = false;
 
-  constructor(private wsService: WebSocketLoginHandlerService, private router: Router) {}
+  constructor(
+    private wsService: WebSocketLoginHandlerService,
+    private router: Router,
+    private authService: AuthenticationService,
+  ) { }
 
   ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.IsLoggedIn = true;
+    }
     this.wsService.setupWebSocket();
   }
 

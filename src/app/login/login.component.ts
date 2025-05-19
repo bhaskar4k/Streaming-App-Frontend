@@ -1,5 +1,5 @@
 // login.component.ts
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EncryptionDecryption } from '../utility/encryption-decryption';
@@ -10,10 +10,12 @@ import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CustomAlertComponent } from '../common-component/custom-alert/custom-alert.component';
 import { ResponseTypeColor } from '../constants/common-constants';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, MatDialogModule],
+  imports: [CommonModule, FormsModule, MatDialogModule, MatProgressBarModule],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -22,12 +24,13 @@ export class LoginComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   isSignUpActive = false;
+  matProgressBarVisible = false;
 
   login = {
     email: '',
     password: ''
   };
-  
+
   signUp = {
     firstName: '',
     lastName: '',
@@ -39,14 +42,14 @@ export class LoginComponent implements OnInit {
   private encryptionDecryption: EncryptionDecryption = new EncryptionDecryption();
 
   constructor(
-    private router: Router,
     private authService: AuthenticationService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
     const JWT = localStorage.getItem("JWT");
     if (JWT) {
-      redirect_to_home(this.router);
+      redirect_to_home();
     }
   }
 
@@ -97,22 +100,33 @@ export class LoginComponent implements OnInit {
       password: this.encryptionDecryption.Encrypt(password),
     };
 
+    this.activeMatProgressBar();
+
     this.authService.DoSignUpService(obj).subscribe({
       next: (response) => {
         if (response.status === 200) {
-          // this.hideMatProgressBar();
+          this.hideMatProgressBar();
+          this.resetSignUpForm();
           this.openDialog("SignUp", response.message, ResponseTypeColor.SUCCESS, null);
           return;
         }
 
-        // this.hideMatProgressBar();
+        this.hideMatProgressBar();
         this.openDialog("SignUp", response.message, ResponseTypeColor.ERROR, null);
       },
       error: (err) => {
-        // this.hideMatProgressBar();
+        this.hideMatProgressBar();
         this.openDialog("SignUp", "Internal server error", ResponseTypeColor.ERROR, null);
       }
     });
+  }
+
+  resetSignUpForm() {
+    this.signUp.firstName = '';
+    this.signUp.lastName = '';
+    this.signUp.email = '';
+    this.signUp.password = '';
+    this.signUp.confirmPassword = '';
   }
 
   validateLogin(): boolean {
@@ -137,22 +151,35 @@ export class LoginComponent implements OnInit {
       ip_address: await get_ip_address()
     };
 
+    this.activeMatProgressBar();
+
     this.authService.DoLoginService(obj).subscribe({
       next: (response) => {
         if (response.status === 200) {
-          // this.hideMatProgressBar();
-          this.openDialog("Login", response.message, ResponseTypeColor.SUCCESS, null);
+          this.hideMatProgressBar();
+          this.authService.setToken(response.data);
+          this.openDialog("Login", response.message, ResponseTypeColor.SUCCESS, 'layout');
           return;
         }
 
-        // this.hideMatProgressBar();
+        this.hideMatProgressBar();
         this.openDialog("Login", response.message, ResponseTypeColor.ERROR, null);
       },
       error: (err) => {
-        // this.hideMatProgressBar();
+        this.hideMatProgressBar();
         this.openDialog("Login", "Internal server error", ResponseTypeColor.ERROR, null);
       }
     });
+  }
+
+  activeMatProgressBar() {
+    this.matProgressBarVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  hideMatProgressBar() {
+    this.matProgressBarVisible = false;
+    this.cdr.detectChanges();
   }
 
   openDialog(dialogTitle: string, dialogText: string, dialogType: number, navigateRoute: string | null): void {

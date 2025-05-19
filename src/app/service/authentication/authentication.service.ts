@@ -8,13 +8,27 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationService {
   tokenKey = 'JWT';
-  
+
   private BASE_URL = EndpointMicroservice.authentication;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getToken(): string | null {
-    return sessionStorage.getItem(this.tokenKey);
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  isLoggedIn(): boolean {
+    return (this.getToken() !== null);
+    //token expiration tao check korbo
+  }
+
+  setToken(token: string) {
+    this.deleteToken();
+    localStorage.setItem(this.tokenKey, JSON.stringify(token));
+  }
+
+  deleteToken() {
+    localStorage.removeItem(this.tokenKey);
   }
 
   DoSignUpService(obj: any): Observable<any> {
