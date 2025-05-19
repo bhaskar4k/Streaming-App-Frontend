@@ -40,9 +40,9 @@ export class WebSocketLoginHandlerService {
 
         this.client.subscribe(`${EndpointWebsocket.get_logout_emit}${this.JWT.device_endpoint}`, (response: IMessage) => {
           const payload = JSON.parse(response.body);
+          
           if (payload.data === "logout_" + this.JWT.device_endpoint) {
-            //openAlertModal("Login", payload.message);
-            localStorage.removeItem("JWT");
+            this.authService.deleteToken();
             this.openDialog('Logout', payload.message, ResponseTypeColor.ERROR, "login");
           }
         });
