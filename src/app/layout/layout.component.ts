@@ -10,7 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { trigger, state, style, transition, animate} from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-layout',
@@ -80,8 +80,8 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  ToggleMenu(menu: any){
-    if(menu.parent_id !== -1){
+  ToggleMenu(menu: any) {
+    if (menu.parent_id !== -1) {
       window.location.href = menu.route_name;
       return;
     }
@@ -89,6 +89,27 @@ export class LayoutComponent implements OnInit {
     menu.is_expanded = !menu.is_expanded;
     this.cdr.detectChanges();
   }
+
+  ngAfterViewInit() {
+    const elements = document.getElementsByClassName('navbar');
+
+    if (elements.length > 0) {
+      const height = (elements[0] as HTMLElement).offsetHeight;
+
+      const main_content = document.getElementsByClassName('main_content');
+      const custom_menu = document.getElementsByClassName('custom_menu');
+      const custom_body = document.getElementsByClassName('custom_body');
+
+      if (custom_menu.length > 0 && custom_body.length > 0) {
+        const heightCalc = `calc(100vh - ${height}px)`;
+        
+        (main_content[0] as HTMLElement).style.height = heightCalc;
+        (custom_menu[0] as HTMLElement).style.height = heightCalc;
+        (custom_body[0] as HTMLElement).style.height = heightCalc;
+      }
+    }
+  }
+
 
   activeMatProgressBar() {
     this.matProgressBarVisible = true;
