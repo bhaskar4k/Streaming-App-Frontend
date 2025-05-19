@@ -48,6 +48,7 @@ export class LayoutComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private dashboardService: DashboardService,
+    private router: Router,
     private cdr: ChangeDetectorRef,
   ) { }
 
@@ -66,7 +67,6 @@ export class LayoutComponent implements OnInit {
 
           if (response.status === 200) {
             this.layout = response.data;
-            console.log(this.layout)
             return;
           }
 
@@ -100,7 +100,7 @@ export class LayoutComponent implements OnInit {
 
   ToggleMenu(menu: any) {
     if (menu.parent_id !== -1) {
-      window.location.href = menu.route_name;
+      this.router.navigate([menu.route_name]);
       return;
     }
 
@@ -127,7 +127,6 @@ export class LayoutComponent implements OnInit {
       }
     }
   }
-
 
   activeMatProgressBar() {
     this.matProgressBarVisible = true;
