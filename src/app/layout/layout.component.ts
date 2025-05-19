@@ -9,7 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faBars } from '@fortawesome/free-solid-svg-icons';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
@@ -37,8 +37,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 export class LayoutComponent implements OnInit {
   matProgressBarVisible = false;
   readonly dialog = inject(MatDialog);
+
   faChevronDown = faChevronDown;
+  faBars = faBars;
   is_expanded: boolean = false;
+
 
   layout: any[] = [];
 
