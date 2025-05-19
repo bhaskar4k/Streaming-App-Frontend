@@ -11,7 +11,7 @@
   <div class="custom_menu bg-dark">
     <div class="custom_menu_container">
       <div *ngFor="let menu of layout">
-        <div class="a_custom_menu_item cursor_pointer" (click)="ToggleMenu(menu)">
+        <div class="a_custom_menu_item cursor_pointer" id="menu_{{menu.id}}" (click)="ToggleMenu(menu)">
           <div class="custom_menu_item">
             <img src="images/a_menu_item_image.svg" class="menu_icons" />
             <span class="menu_item_text">{{menu.menu_name}}</span>
@@ -23,7 +23,7 @@
 
         <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
           <div *ngFor="let sub of menu.child">
-            <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
+            <div class="a_custom_menu_item sub_item cursor_pointer" id="menu_{{sub.id}}" (click)="ToggleMenu(sub)">
               <div class="custom_menu_item">
                 <img src="images/a_menu_item_image.svg" class="menu_icons" />
                 <span class="menu_item_text">{{sub.menu_name}}</span>

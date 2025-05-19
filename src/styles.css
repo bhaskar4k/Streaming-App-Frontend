@@ -56,6 +56,8 @@ body {
     --failed: #fd0000;
     --warning: #f1b100;
     --light-blue: #007bff;
+    --bootstrap-bg-dark: #212529;
+    --bootstrap-bg-dark-light: #333333;
 }
 
 .container{

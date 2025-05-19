@@ -14,6 +14,7 @@ import { AuthenticationService } from './service/authentication/authentication.s
 })
 export class AppComponent implements OnInit, OnDestroy {
   IsLoggedIn = false;
+  title = "Streaming App";
 
   constructor(
     private wsService: WebSocketLoginHandlerService,

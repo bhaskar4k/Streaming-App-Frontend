@@ -100,6 +100,32 @@ export class LayoutComponent implements OnInit {
 
   ToggleMenu(menu: any) {
     if (menu.parent_id !== -1) {
+      this.layout.forEach((element: any) => {
+        if (element.id !== menu.id) {
+          let item = document.getElementById(`menu_${element.id}`);
+          if (item) {
+            item.style.backgroundColor = "var(--bootstrap-bg-dark)";
+            item.style.padding = "0rem 0rem";
+          }
+        }
+        if (element.child) {
+          element.child.forEach((child: any) => {
+            if (child.id !== menu.id) {
+              let item = document.getElementById(`menu_${child.id}`);
+              if (item) {
+                item.style.backgroundColor = "var(--bootstrap-bg-dark)";
+                item.style.padding = "0rem 0rem";
+              }
+            }
+          });
+        }
+      });
+
+      let item = document.getElementById(`menu_${menu.id}`);
+      if (item) {
+        item.style.backgroundColor = "var(--bootstrap-bg-dark-light)";
+        item.style.padding = "0.5rem 1rem";
+      }
       this.router.navigate([menu.route_name]);
       return;
     }
