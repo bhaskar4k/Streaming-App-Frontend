@@ -1,1 +1,129 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    /* -webkit-user-select: none; */
+    /* user-select: none; */
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+body {
+    animation: transitionIn 0.75s;
+    /* font-family: "Noto Sans", sans-serif !important; */
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 500 !important;
+    overflow-x: hidden;
+    max-width: 100%;
+    background-color: var(--light);
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--white);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+:root {
+    --default-theme: #094250;
+    --default-theme-hover: #0d5f73;
+    --default-theme-hover2: #11748d;
+    --black: #000000;
+    --white: #ffffff;
+    --light: #f1f1f1;
+    --light1: #f8f8f8;
+    --success: #2abe05;
+    --failed: #fd0000;
+    --warning: #f1b100;
+    --light-blue: #007bff;
+}
+
+.custom-button1 {
+    background-color: var(--default-theme);
+    border: none;
+    color: #ffffff;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+}
+
+.custom-button1:hover {
+    background-color: var(--default-theme-hover);
+}
+
+.matProgressBar {
+    border-radius: 50px;
+    color: var(--default-theme);
+}
+
+@media (max-width: 768px) {
+    .custom-button1 {
+        font-size: 0.8rem;
+    }
+}
+
+.mat-mdc-row,
+.mat-mdc-header-row,
+.mdc-data-table__content {
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 500 !important;
+}
+
+.text_card_success {
+    background-color: #c6ffc4 !important;
+    border-radius: 5px !important;
+    padding: 2px 4px !important;
+    border: 1px solid gray;
+    font-size: 0.8rem;
+}
+
+.text_card_danger {
+    background-color: #ffd1d3 !important;
+    border-radius: 5px !important;
+    padding: 2px 4px !important;
+    border: 1px solid gray;
+    font-size: 0.8rem;
+}
+
+.text_card_idle {
+    background-color: #d1d1d1 !important;
+    border-radius: 5px !important;
+    padding: 2px 4px !important;
+    border: 1px solid gray;
+    font-size: 0.8rem;
+}
+
+.form-check-input {
+    width: 2.5rem;
+    padding: 0 !important;
+}
+
+.mat_table_header_font_size{
+    font-size: 1rem;
+}
