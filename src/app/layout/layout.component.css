@@ -60,3 +60,10 @@
   height: 100vh;
   transition: 0.3s all ease-in-out;
 }
+
+.signature{
+    position: absolute;
+    bottom: 0;
+    color: var(--light);
+    font-size: 0.8rem;
+}
