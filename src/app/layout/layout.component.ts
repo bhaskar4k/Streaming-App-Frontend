@@ -1,49 +1,34 @@
 import { redirect_to_home } from '../utility/common-utils';
 import { AuthenticationService } from '../service/authentication/authentication.service';
-import { Component, OnInit, HostListener, ChangeDetectorRef, inject, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject, Renderer2 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { DashboardService } from '../service/dashboard/dashboard.service';
 import { ResponseTypeColor } from '../constants/common-constants';
-import { GenerateMenu } from '../utility/menu-generator';
 import { CustomAlertComponent } from '../common-component/custom-alert/custom-alert.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-layout',
-  imports: [MatProgressBarModule, MatDialogModule, RouterModule, CommonModule],
+  imports: [MatProgressBarModule, MatDialogModule, RouterModule, CommonModule, FontAwesomeModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent implements OnInit {
   matProgressBarVisible = false;
   readonly dialog = inject(MatDialog);
+  faChevronDown = faChevronDown;
+  is_expanded: boolean = false;
 
-  windowWidth = window.innerWidth;
-  previousWindowWidth = window.innerWidth;
-  toogleStatus = 0;
-  elements: any[] = [];
   layout: any[] = [];
-
-  iconMap: { [key: string]: string } = {
-    home: 'assets/images/home.svg',
-    dashboard: 'assets/images/dashboard.svg',
-    upload: 'assets/images/upload.svg',
-    profile: 'assets/images/profile.svg',
-    logout: 'assets/images/logout.svg',
-    manage: 'assets/images/manage.svg',
-    uploaded_video: 'assets/images/uploaded_video.svg',
-    deleted_video: 'assets/images/delete.svg',
-    down_arrow: 'assets/images/down_arrow.svg'
-  };
 
   constructor(
     private authService: AuthenticationService,
     private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
-    private renderer: Renderer2
   ) { }
 
   loadHomePage() {
@@ -52,17 +37,7 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.getLeftSideMenu();
-  }
-
-  @HostListener('window:resize')
-  onResize() {
-    this.windowWidth = window.innerWidth;
-    // this.adjustLayout();
-  }
-
-  async getLeftSideMenu() {
+  async ngOnInit() {
     try {
       this.activeMatProgressBar();
       this.dashboardService.DoGetMenu().subscribe({
@@ -71,17 +46,7 @@ export class LayoutComponent implements OnInit {
 
           if (response.status === 200) {
             this.layout = response.data;
-
-            this.elements = response.data.map((item: any) => ({
-              id: item.id,
-              menu_name_id: item.menu_name_id
-            }));
-
-            const rootMenu = document.getElementById('root_menu');
-            if (rootMenu) {
-              rootMenu.innerHTML = GenerateMenu(response.data, this.iconMap);
-              this.addEventListener();
-            }
+            console.log(this.layout)
             return;
           }
 
@@ -96,6 +61,16 @@ export class LayoutComponent implements OnInit {
       this.hideMatProgressBar();
       this.openDialog("Dashboard", "Internal server error", ResponseTypeColor.ERROR, null);
     }
+  }
+
+  ToggleMenu(menu: any){
+    if(menu.parent_id !== -1){
+      window.location.href = menu.route_name;
+      return;
+    }
+
+    menu.is_expanded = !menu.is_expanded;
+    this.cdr.detectChanges();
   }
 
   activeMatProgressBar() {
@@ -118,21 +93,5 @@ export class LayoutComponent implements OnInit {
         window.location.href = navigateRoute;
       }
     });
-  }
-
-  addEventListener(): void {
-    for (let i = 1; i <= 6; i++) {
-      const el = document.getElementById(`a_menu_item_${i}`);
-      console.log(i, el)
-      if (el) {
-        this.renderer.listen(el, 'click', () => {
-
-          const subel = document.getElementById(`submenu-${i}`);
-          if (subel) {
-            subel.classList.toggle("show");
-          }
-        });
-      }
-    }
   }
 }

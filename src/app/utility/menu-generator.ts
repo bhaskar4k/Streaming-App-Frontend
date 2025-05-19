@@ -4,7 +4,7 @@ export function GenerateMenu(res: any, iconMap: any) {
     res.forEach((parent: any) => {
         if (parent.parent_id <= 0) {
             if (parent.parent_id === 0) {
-                output += `<div class="a-menu-item" id="a_menu_item_${parent.id}">
+                output += `<div class="a-menu-item" id="a_menu_item_${parent.route_name}">
                                 <div class="menu-item">
                                     <img src="assets/images/a_menu_item_image.svg" class="menu-icons"/>
                                     <h4 class="menu-item-text">${parent.menu_name}</h4>
@@ -27,7 +27,7 @@ export function GenerateMenu(res: any, iconMap: any) {
 
             res.forEach((child: any) => {
                 if (child.parent_id === parent.id) {
-                    output += `<div class="a-menu-item-child" onclick="navigateTo('${child.route_name}')">
+                    output += `<div class="a-menu-item-child" id="a_menu_item_${child.route_name}">
                                     <div class="menu-item">
                                         <img src="assets/images/a_menu_item_image.svg" class="menu-icons" />
                                         <h4 class="menu-item-text">${child.menu_name}</h4>
