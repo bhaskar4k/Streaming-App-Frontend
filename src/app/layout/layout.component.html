@@ -11,7 +11,7 @@
         <img src="images/a_menu_item_image.svg" class="menu_icons" />
         <span class="menu_item_text">{{menu.menu_name}}</span>
       </div>
-      <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"></fa-icon>
+      <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon" [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
     </div>
 
 

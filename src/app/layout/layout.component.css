@@ -25,6 +25,11 @@
 
 .menu_item_expand_icon{
     color: white;
+    transition: 0.3s all ease-in-out;
+}
+
+.menu_item_expand_icon.rotated {
+  transform: rotate(180deg);
 }
 
 .sub_item{
