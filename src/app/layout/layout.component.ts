@@ -58,7 +58,7 @@ export class LayoutComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
-    this.adjustLayout();
+    // this.adjustLayout();
   }
 
   async getLeftSideMenu() {
@@ -96,64 +96,26 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  toggleSidebar() {
-    if (this.windowWidth < 1200) return;
+  toggleSidebar(id: any, parent_id: any, route: string) {
+    // if (parent_id !== -1) navigate(route);
 
-    const menubar = document.getElementById('menubar');
-    const subMenus = document.getElementsByClassName('a-menu-item-child') as HTMLCollectionOf<HTMLElement>;
+    //     const subMenuParent = document.getElementById(`submenu-${id}`);
+    //     const subMenuToggleIcon = document.getElementById(`toggle-${id}`);
+    //     const subMenus = document.getElementsByClassName('a-menu-item-child');
 
-    const isCollapsed = menubar?.style.width === '70px';
-    const newWidthMenubar = isCollapsed ? '13%' : '70px';
-    const newWidthMainContent = isCollapsed ? '86%' : 'calc(100% - 85px)';
-    const newDisplay = isCollapsed ? 'block' : 'none';
-    const marginLeftSubmenu = isCollapsed ? '20px' : '0px';
-    this.toogleStatus = isCollapsed ? 1 : 0;
+    //     if (subMenuParent.style.maxHeight && subMenuParent.style.maxHeight !== "0px") {
+    //         subMenuParent.style.maxHeight = "0px";
+    //         subMenuToggleIcon.style.transform = "rotate(0deg)";
+    //     } else {
+    //         subMenuParent.style.maxHeight = subMenuParent.scrollHeight + "px";
+    //         subMenuToggleIcon.style.transform = "rotate(180deg)";
+    //     }
 
-    if (menubar) menubar.style.width = newWidthMenubar;
+    //     let subMenuMarginLeft = (document.getElementById('menubar').style.width === '70px') ? "0px" : "20px";
 
-    const mainContent = document.getElementById('mainContent');
-    if (mainContent) mainContent.style.width = newWidthMainContent;
-
-    this.elements.forEach(item => {
-      const elem = document.getElementById(item.menu_name_id);
-      if (elem) elem.style.display = newDisplay;
-      const toggleMenuIcon = document.getElementById(`toggle-${item.id}`);
-      if (toggleMenuIcon) toggleMenuIcon.style.display = newDisplay;
-    });
-
-    Array.from(subMenus).forEach(el => {
-      el.style.marginLeft = marginLeftSubmenu;
-    });
-  }
-
-  private adjustLayout() {
-    const menubar = document.getElementById('menubar');
-    const mainContent = document.getElementById('mainContent');
-    const isWide = this.windowWidth >= 1200;
-
-    if (isWide && (this.previousWindowWidth >= 1200 || !this.toogleStatus)) {
-      this.previousWindowWidth = this.windowWidth;
-      return;
-    }
-
-    if (!isWide && this.previousWindowWidth < 1200) {
-      this.previousWindowWidth = this.windowWidth;
-      return;
-    }
-
-    const newWidthMenubar = isWide ? '13%' : '70px';
-    const newWidthMainContent = isWide ? '86%' : 'calc(100% - 85px)';
-    const newDisplay = isWide ? 'block' : 'none';
-
-    if (menubar) menubar.style.width = newWidthMenubar;
-    if (mainContent) mainContent.style.width = newWidthMainContent;
-
-    this.elements.forEach(item => {
-      const elem = document.getElementById(item.menu_name_id);
-      if (elem) elem.style.display = newDisplay;
-    });
-
-    this.previousWindowWidth = this.windowWidth;
+    //     for (let i = 0; i < subMenus.length; i++) {
+    //         subMenus[i].style.marginLeft = subMenuMarginLeft;
+    //     }
   }
 
   activeMatProgressBar() {

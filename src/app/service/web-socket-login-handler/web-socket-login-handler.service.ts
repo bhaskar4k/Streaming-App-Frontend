@@ -24,7 +24,7 @@ export class WebSocketLoginHandlerService {
       return;
     }
 
-    this.JWT = JSON.parse(this.JWT);
+    this.JWT = this.authService.getJwtObject();
     if (!this.JWT.device_endpoint) {
       this.router.navigate(['login']);
       return;

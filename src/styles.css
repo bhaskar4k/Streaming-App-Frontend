@@ -48,9 +48,6 @@ body {
 }
 
 :root {
-    --default-theme: #094250;
-    --default-theme-hover: #0d5f73;
-    --default-theme-hover2: #11748d;
     --black: #000000;
     --white: #ffffff;
     --light: #f1f1f1;
@@ -113,4 +110,60 @@ body {
 
 .mat_table_header_font_size{
     font-size: 1rem;
+}
+
+
+#menubar{
+    width: 20rem;
+    height: 100vh;
+}
+
+.a-menu-item {
+    width: 20rem;
+    height: 3rem;
+    transition: 0.3s all ease-in-out;
+    color: white;
+    cursor: pointer;
+}
+
+.a-menu-item:hover {
+    background-color: #464646;
+}
+
+.menu-item{
+    width: 20rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.menu-icons {
+    width: 2rem;
+}
+
+.menu-item-text {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+
+.submenu {
+    display: none;
+}
+
+.submenu.show {
+    display: block;
+    padding-left: 2rem;
+    background-color: #f1f3f5;
+}
+
+.a-menu-item-subitem-toggle {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.a-menu-item.open .a-menu-item-subitem-toggle {
+    transform: rotate(180deg);
 }

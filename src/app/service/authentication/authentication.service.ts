@@ -13,6 +13,18 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
+  getJwtObject() {
+    const tokenStr = localStorage.getItem(this.tokenKey);
+    if (tokenStr) {
+      try {
+        return JSON.parse(tokenStr);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
   getToken(): string | null {
     const tokenStr = localStorage.getItem(this.tokenKey);
     if (tokenStr) {
@@ -25,7 +37,6 @@ export class AuthenticationService {
     }
     return null;
   }
-
 
   isLoggedIn(): boolean {
     return (this.getToken() !== null);
