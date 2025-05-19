@@ -61,31 +61,14 @@ body {
     --light-blue: #007bff;
 }
 
-.custom-button1 {
-    background-color: var(--default-theme);
-    border: none;
-    color: #ffffff;
-    padding: 0.7rem 1rem;
-    text-align: center;
-    font-size: 1rem;
-    border-radius: 1.5rem;
-    cursor: pointer;
-    transition: 0.3s all ease-in-out;
-}
-
-.custom-button1:hover {
-    background-color: var(--default-theme-hover);
+.container{
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
 }
 
 .matProgressBar {
     border-radius: 50px;
     color: var(--default-theme);
-}
-
-@media (max-width: 768px) {
-    .custom-button1 {
-        font-size: 0.8rem;
-    }
 }
 
 .mat-mdc-row,

@@ -2,14 +2,15 @@
     background: #fff;
     border-radius: 10px;
     border: 1px solid #ff416c;
-    position: relative;
+    position: absolute;
     overflow: hidden;
     width: 900px;
-    max-width: 100%;
+    max-width: 95%;
     min-height: 600px;
-    margin: 0 auto;
     display: flex;
-    margin-top: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .form-container {
@@ -110,10 +111,10 @@
 /* Existing styles remain the same above this point */
 
 /* Responsive adjustments */
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
     .auth-container {
         flex-direction: column;
-        width: 100%;
+        width: 95%;
         height: auto;
         box-shadow: none;
     }
@@ -155,4 +156,4 @@
     .form-container {
         padding: 1.5rem;
     }
-}
+} */
