@@ -23,8 +23,18 @@ export class LoginComponent implements OnInit {
 
   isSignUpActive = false;
 
-  login = { email: '', password: '' };
-  signUp = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+  login = {
+    email: '',
+    password: ''
+  };
+  
+  signUp = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
 
   private encryptionDecryption: EncryptionDecryption = new EncryptionDecryption();
 
