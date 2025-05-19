@@ -10,12 +10,29 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { trigger, state, style, transition, animate} from '@angular/animations';
 
 @Component({
   selector: 'app-layout',
   imports: [MatProgressBarModule, MatDialogModule, RouterModule, CommonModule, FontAwesomeModule],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
+  animations: [
+    trigger('submenuToggle', [
+      state('collapsed', style({
+        height: '0',
+        overflow: 'hidden',
+        opacity: 0
+      })),
+      state('expanded', style({
+        height: '*',
+        opacity: 1
+      })),
+      transition('collapsed <=> expanded', [
+        animate('300ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class LayoutComponent implements OnInit {
   matProgressBarVisible = false;
