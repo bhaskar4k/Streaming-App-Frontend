@@ -24,8 +24,6 @@ export class CustomAlertComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
   ) { }
 
-  private bootstrapElements!: { css: HTMLLinkElement; js: HTMLScriptElement };
-
   ngOnInit(): void {
     this.formattedText = this.data.text.replace(/\n/g, '<br>');
   }
