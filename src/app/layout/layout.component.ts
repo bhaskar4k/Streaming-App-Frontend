@@ -91,11 +91,9 @@ export class LayoutComponent implements OnInit {
 
     if ((custom_menu[0] as HTMLElement).style.width === "18rem") {
       (custom_menu[0] as HTMLElement).style.width = "0px";
-      // (custom_menu[0] as HTMLElement).style.padding = "0px";
       (custom_body[0] as HTMLElement).style.width = "100vw";
     } else {
       (custom_menu[0] as HTMLElement).style.width = "18rem";
-      // (custom_menu[0] as HTMLElement).style.padding = "0.5rem";
       (custom_body[0] as HTMLElement).style.width = widthCalc;
     }
   }
