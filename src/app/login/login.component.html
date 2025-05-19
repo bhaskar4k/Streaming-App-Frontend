@@ -2,63 +2,63 @@
 
 <div class="container">
     <div class="auth-container" [class.right-panel-active]="isSignUpActive">
-    <!-- Sign In -->
-    <div class="form-container sign-in-container">
-        <form>
-            <h2 class="text-center mb-5">Sign In</h2>
-            <div class="mb-3 text-center">
-                <a href="#" class="btn btn-outline-secondary btn-sm">
-                    <img [src]="'assets/images/google.svg'" alt="Google" height="20"> Sign in with Google
-                </a>
-            </div>
+        <!-- Sign In -->
+        <div class="form-container sign-in-container">
+            <form>
+                <h2 class="text-center mb-5">Sign In</h2>
+                <div class="mb-3 text-center">
+                    <a href="#" class="btn btn-outline-secondary btn-sm">
+                        <img [src]="'assets/images/google.svg'" alt="Google" height="20"> Sign in with Google
+                    </a>
+                </div>
 
-            <input type="email" class="form-control mb-2" placeholder="Email" [(ngModel)]="login.email"
-                name="loginEmail">
-            <input type="password" class="form-control mb-3" placeholder="Password" [(ngModel)]="login.password"
-                name="loginPassword">
-            <a href="#" class="d-block mb-3 text-end">Forgot your password?</a>
-            <button class="btn btn-success w-100 mt-4" type="button" (click)="doLogin()">Sign In</button>
-        </form>
-    </div>
+                <input type="email" class="form-control mb-2" placeholder="Email" [(ngModel)]="login.email"
+                    name="loginEmail">
+                <input type="password" class="form-control mb-3" placeholder="Password" [(ngModel)]="login.password"
+                    name="loginPassword">
+                <a href="#" class="d-block mb-3 text-end">Forgot your password?</a>
+                <button class="btn btn-success w-100 mt-4" type="button" (click)="doLogin()">Sign In</button>
+            </form>
+        </div>
 
-    <!-- Sign Up -->
-    <div class="form-container sign-up-container">
-        <form>
-            <h2 class="text-center mb-5">Create Account</h2>
-            <div class="mb-3 text-center">
-                <a href="#" class="btn btn-outline-secondary btn-sm">
-                    <img [src]="'assets/images/google.svg'" alt="Google" height="20"> Sign up with Google
-                </a>
-            </div>
+        <!-- Sign Up -->
+        <div class="form-container sign-up-container">
+            <form>
+                <h2 class="text-center mb-5">Create Account</h2>
+                <div class="mb-3 text-center">
+                    <a href="#" class="btn btn-outline-secondary btn-sm">
+                        <img [src]="'assets/images/google.svg'" alt="Google" height="20"> Sign up with Google
+                    </a>
+                </div>
 
-            <input type="text" class="form-control mb-2" placeholder="First Name" [(ngModel)]="signUp.firstName"
-                name="signupFirstName">
-            <input type="text" class="form-control mb-2" placeholder="Last Name" [(ngModel)]="signUp.lastName"
-                name="signupLastName">
-            <input type="email" class="form-control mb-2" placeholder="Email" [(ngModel)]="signUp.email"
-                name="signupEmail">
-            <input type="password" class="form-control mb-2" placeholder="Password" [(ngModel)]="signUp.password"
-                name="signupPassword">
-            <input type="password" class="form-control mb-3" placeholder="Confirm Password"
-                [(ngModel)]="signUp.confirmPassword" name="signupConfirmPassword">
-            <button class="btn btn-primary w-100 mt-4" type="button" (click)="DoSignUp()">Sign Up</button>
-        </form>
-    </div>
+                <input type="text" class="form-control mb-2" placeholder="First Name" [(ngModel)]="signUp.firstName"
+                    name="signupFirstName">
+                <input type="text" class="form-control mb-2" placeholder="Last Name" [(ngModel)]="signUp.lastName"
+                    name="signupLastName">
+                <input type="email" class="form-control mb-2" placeholder="Email" [(ngModel)]="signUp.email"
+                    name="signupEmail">
+                <input type="password" class="form-control mb-2" placeholder="Password" [(ngModel)]="signUp.password"
+                    name="signupPassword">
+                <input type="password" class="form-control mb-3" placeholder="Confirm Password"
+                    [(ngModel)]="signUp.confirmPassword" name="signupConfirmPassword">
+                <button class="btn btn-primary w-100 mt-4" type="button" (click)="DoSignUp()">Sign Up</button>
+            </form>
+        </div>
 
-    <!-- Overlay -->
-    <div class="overlay-container">
-        <div class="overlay">
-            <div class="overlay-panel overlay-left">
-                <h2>Welcome Back!</h2>
-                <p>To keep connected with us please login with your personal info</p>
-                <button class="btn btn-outline-light" (click)="togglePanel(false)">Sign In</button>
-            </div>
-            <div class="overlay-panel overlay-right">
-                <h2>Hello, Friend!</h2>
-                <p>Enter your personal details and start your journey with us</p>
-                <button class="btn btn-outline-light" (click)="togglePanel(true)">Sign Up</button>
+        <!-- Overlay -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h2>Welcome Back!</h2>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="btn btn-outline-light" (click)="togglePanel(false)">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h2>Hello, Friend!</h2>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="btn btn-outline-light" (click)="togglePanel(true)">Sign Up</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
