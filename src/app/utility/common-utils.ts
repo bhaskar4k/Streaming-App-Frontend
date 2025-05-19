@@ -17,8 +17,8 @@ export async function get_ip_address() {
 }
 
 export function do_logout(navigate: string) {
-    const authenticationService = new AuthenticationService();
-    // authenticationService.DoLogout();
+    authService: AuthenticationService
+    // authService.DoLogout();
     localStorage.removeItem("JWT");
     redirect_to_login(navigate);
 }

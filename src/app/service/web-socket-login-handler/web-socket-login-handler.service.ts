@@ -18,7 +18,6 @@ export class WebSocketLoginHandlerService {
   constructor(private router: Router, private authService: AuthenticationService) { }
 
   public setupWebSocket() {
-    debugger;
     console.log(this.authService.getToken());
 
     this.JWT = this.authService.getToken();

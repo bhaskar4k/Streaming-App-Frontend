@@ -20,6 +20,9 @@ import { ResponseTypeColor } from '../constants/common-constants';
 })
 export class LoginComponent implements OnInit {
   readonly dialog = inject(MatDialog);
+
+  isSignUpActive = false;
+
   login = { email: '', password: '' };
   signUp = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
@@ -46,9 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   togglePanel(signUp: boolean) {
-    const container = document.getElementById('login_child_container');
-    if (signUp) container?.classList.add("right-panel-active");
-    else container?.classList.remove("right-panel-active");
+    this.isSignUpActive = signUp;
   }
 
   validateSignUp(): boolean {
@@ -78,24 +79,38 @@ export class LoginComponent implements OnInit {
       this.openDialog('SignUp', "Password and Confirm password is not matching.", ResponseTypeColor.INFO, null);
       return false;
     }
-    
+
     return true;
   }
 
-  async doSignUp() {
+  async DoSignUp() {
     if (!this.validateSignUp()) return;
 
-    // const { firstName, lastName, email, password } = this.signUp;
-    // const encryptedPassword = this.encryption.Encrypt(password);
-    // const response = await this.authService.doSignUpService({ first_name: firstName, last_name: lastName, email, password: encryptedPassword });
-    // this.apiResponseStatus = response.status;
+    const { firstName, lastName, email, password } = this.signUp;
 
-    // if (response.status === 200) {
-    //   this.alert(response.message, Environment.colorSuccess, Environment.alert_modal_header_signup);
-    //   this.signUp = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
-    // } else {
-    //   this.alert(response.message, Environment.colorError, Environment.alert_modal_header_signup);
-    // }
+    let obj = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: this.encryptionDecryption.Encrypt(password),
+    };
+
+    this.authService.DoSignUpService(obj).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          // this.hideMatProgressBar();
+          this.openDialog("SignUp", response.message, ResponseTypeColor.SUCCESS, null);
+          return;
+        }
+
+        // this.hideMatProgressBar();
+        this.openDialog("SignUp", response.message, ResponseTypeColor.ERROR, null);
+      },
+      error: (err) => {
+        // this.hideMatProgressBar();
+        this.openDialog("SignUp", "Internal server error", ResponseTypeColor.ERROR, null);
+      }
+    });
   }
 
   validateLogin(): boolean {
@@ -114,17 +129,28 @@ export class LoginComponent implements OnInit {
   async doLogin() {
     if (!this.validateLogin()) return;
 
-    // const ip = await get_ip_address();
-    // const encryptedPassword = this.encryption.Encrypt(this.login.password);
-    // const response = await this.authService.doLoginService({ email: this.login.email, password: encryptedPassword, ip_address: ip });
-    // this.apiResponseStatus = response.status;
+    let obj = {
+      email: this.login.email,
+      password: this.encryptionDecryption.Encrypt(this.login.password),
+      ip_address: await get_ip_address()
+    };
 
-    // if (response.status === 200) {
-    //   localStorage.setItem("JWT", JSON.stringify(response.data));
-    //   redirectToHome(this.router);
-    // } else {
-    //   this.alert(response.message, Environment.colorError, Environment.alert_modal_header_login);
-    // }
+    this.authService.DoLoginService(obj).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          // this.hideMatProgressBar();
+          this.openDialog("Login", response.message, ResponseTypeColor.SUCCESS, null);
+          return;
+        }
+
+        // this.hideMatProgressBar();
+        this.openDialog("Login", response.message, ResponseTypeColor.ERROR, null);
+      },
+      error: (err) => {
+        // this.hideMatProgressBar();
+        this.openDialog("Login", "Internal server error", ResponseTypeColor.ERROR, null);
+      }
+    });
   }
 
   openDialog(dialogTitle: string, dialogText: string, dialogType: number, navigateRoute: string | null): void {
