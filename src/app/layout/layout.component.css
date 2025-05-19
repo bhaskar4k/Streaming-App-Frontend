@@ -12,10 +12,12 @@
 
 .custom_menu_item{
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
 }
 
 .menu_icons{
-    width: 1.7rem;
+    width: 1.4rem;
 }
 
 .menu_item_text{

@@ -20,7 +20,7 @@ import { trigger, state, style, transition, animate} from '@angular/animations';
   animations: [
     trigger('submenuToggle', [
       state('collapsed', style({
-        height: '0',
+        height: '0px',
         overflow: 'hidden',
         opacity: 0
       })),

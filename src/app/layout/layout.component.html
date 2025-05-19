@@ -11,11 +11,12 @@
         <img src="images/a_menu_item_image.svg" class="menu_icons" />
         <span class="menu_item_text">{{menu.menu_name}}</span>
       </div>
-      <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon" [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
+      <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"
+        [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
     </div>
 
 
-    <div *ngIf="menu.is_expanded && menu.parent_id===-1" [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
+    <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
       <div *ngFor="let sub of menu.child">
         <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
           <div class="custom_menu_item">
@@ -25,6 +26,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
