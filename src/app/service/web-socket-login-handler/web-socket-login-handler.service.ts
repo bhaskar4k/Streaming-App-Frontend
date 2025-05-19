@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Client, IMessage } from '@stomp/stompjs';
 import { Router } from '@angular/router';
 import { EndpointWebsocket } from '../../endpoints/endpoints';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { CustomAlertComponent } from '../../common-component/custom-alert/custom-alert.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ResponseTypeColor } from '../../constants/common-constants';
 
 @Injectable({ providedIn: 'root' })
 export class WebSocketLoginHandlerService {
@@ -10,7 +13,8 @@ export class WebSocketLoginHandlerService {
   private connected = false;
   private timeoutRef: any;
   private JWT: any;
-
+  readonly dialog = inject(MatDialog);
+  
   constructor(private router: Router, private authService: AuthenticationService) { }
 
   public setupWebSocket() {
@@ -37,28 +41,25 @@ export class WebSocketLoginHandlerService {
       onConnect: (frame) => {
         this.connected = true;
         console.log('Connected: ', frame);
+        this.openDialog('Websocket', "Connected", ResponseTypeColor.SUCCESS, null);
 
         this.client.subscribe(`${EndpointWebsocket.get_logout_emit}${this.JWT.device_endpoint}`, (response: IMessage) => {
           const payload = JSON.parse(response.body);
           if (payload.data === "logout_" + this.JWT.device_endpoint) {
             //openAlertModal("Login", payload.message);
-
-            this.timeoutRef = setTimeout(() => {
-              //closeAlertModal();
-              localStorage.removeItem("JWT");
-              setTimeout(() => {
-                this.router.navigate(['/login']);
-              }, 500);
-            }, 5000);
+            localStorage.removeItem("JWT");
+            this.openDialog('Logout', payload.message, ResponseTypeColor.ERROR, "login");
           }
         });
       },
       onStompError: frame => {
-        console.error('STOMP Error', frame.body);
+        // console.error('STOMP Error', frame.body);
+        this.openDialog('Error', "Internal server error", ResponseTypeColor.ERROR, null);
       },
       onWebSocketError: err => {
-        console.error('WebSocket error', err);
+        // console.error('WebSocket error', err);
         this.connected = false;
+        this.openDialog('Error', "Internal server error", ResponseTypeColor.ERROR, null);
       },
       onDisconnect: () => {
         this.connected = false;
@@ -72,5 +73,17 @@ export class WebSocketLoginHandlerService {
     if (this.client && this.client.active) {
       this.client.deactivate();
     }
+  }
+
+  openDialog(dialogTitle: string, dialogText: string, dialogType: number, navigateRoute: string | null): void {
+    const dialogRef = this.dialog.open(CustomAlertComponent, {
+      data: { title: dialogTitle, text: dialogText, type: dialogType }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      if (navigateRoute) {
+        window.location.href = navigateRoute;
+      }
+    });
   }
 }
