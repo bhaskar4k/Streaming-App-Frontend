@@ -18,8 +18,6 @@ export class WebSocketLoginHandlerService {
   constructor(private router: Router, private authService: AuthenticationService) { }
 
   public setupWebSocket() {
-    console.log("this.authService.getToken()",this.authService.getToken());
-
     this.JWT = this.authService.getToken();
     if (!this.JWT) {
       this.router.navigate(['login']);
@@ -39,8 +37,6 @@ export class WebSocketLoginHandlerService {
       heartbeatOutgoing: 4000,
       onConnect: (frame) => {
         this.connected = true;
-        console.log('Connected: ', frame);
-        this.openDialog('Websocket', "Connected", ResponseTypeColor.SUCCESS, null);
 
         this.client.subscribe(`${EndpointWebsocket.get_logout_emit}${this.JWT.device_endpoint}`, (response: IMessage) => {
           const payload = JSON.parse(response.body);
