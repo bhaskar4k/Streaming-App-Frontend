@@ -16,23 +16,10 @@ export async function get_ip_address() {
     return null;
 }
 
-export function do_logout(navigate: string) {
-    authService: AuthenticationService
-    // authService.DoLogout();
-    localStorage.removeItem("JWT");
-    redirect_to_login(navigate);
-}
-
-export function redirect_to_login(navigate: string){
-    setTimeout(() => {
-        //navigate(`/login`);
-    }, 500);
-}
-
 export function redirect_to_home(){
     window.location.href = "layout";
 }
 
-export function go_back(navigate: string){
-    // navigate(-1);
+export function go_back(navigate: any){
+    navigate(-1);
 }
