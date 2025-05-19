@@ -18,14 +18,8 @@ export class WebSocketLoginHandlerService {
   constructor(private router: Router, private authService: AuthenticationService) { }
 
   public setupWebSocket() {
-    this.JWT = this.authService.getToken();
-    if (!this.JWT) {
-      this.router.navigate(['login']);
-      return;
-    }
-
     this.JWT = this.authService.getJwtObject();
-    if (!this.JWT.device_endpoint) {
+    if (!this.JWT) {
       this.router.navigate(['login']);
       return;
     }
