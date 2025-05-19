@@ -14,8 +14,18 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    const tokenStr = localStorage.getItem(this.tokenKey);
+    if (tokenStr) {
+      try {
+        const token = JSON.parse(tokenStr);
+        return token?.jwt || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   }
+
 
   isLoggedIn(): boolean {
     return (this.getToken() !== null);
