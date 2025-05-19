@@ -4,29 +4,33 @@
 
 <mat-progress-bar mode="indeterminate" *ngIf="matProgressBarVisible" class="matProgressBar"></mat-progress-bar>
 
-<div class="custom_menu bg-dark">
-  <div *ngFor="let menu of layout">
-    <div class="a_custom_menu_item cursor_pointer" (click)="ToggleMenu(menu)">
-      <div class="custom_menu_item">
-        <img src="images/a_menu_item_image.svg" class="menu_icons" />
-        <span class="menu_item_text">{{menu.menu_name}}</span>
+<div class="main_content">
+  <div class="custom_menu bg-dark">
+    <div *ngFor="let menu of layout">
+      <div class="a_custom_menu_item cursor_pointer" (click)="ToggleMenu(menu)">
+        <div class="custom_menu_item">
+          <img src="images/a_menu_item_image.svg" class="menu_icons" />
+          <span class="menu_item_text">{{menu.menu_name}}</span>
+        </div>
+        <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"
+          [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
       </div>
-      <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"
-        [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
-    </div>
 
 
-    <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
-      <div *ngFor="let sub of menu.child">
-        <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
-          <div class="custom_menu_item">
-            <img src="images/a_menu_item_image.svg" class="menu_icons" />
-            <span class="menu_item_text">{{sub.menu_name}}</span>
+      <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
+        <div *ngFor="let sub of menu.child">
+          <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
+            <div class="custom_menu_item">
+              <img src="images/a_menu_item_image.svg" class="menu_icons" />
+              <span class="menu_item_text">{{sub.menu_name}}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<router-outlet></router-outlet>
+  <div class="custom_body">
+    <router-outlet></router-outlet>
+  </div>
+</div>
