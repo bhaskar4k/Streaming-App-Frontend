@@ -63,12 +63,13 @@ export class LayoutComponent implements OnInit {
 
   async getLeftSideMenu() {
     try {
+      this.activeMatProgressBar();
       this.dashboardService.DoGetMenu().subscribe({
         next: (response) => {
+          this.hideMatProgressBar();
+
           if (response.status === 200) {
-            this.hideMatProgressBar();
             this.layout = response.data;
-            console.log(this.layout)
 
             this.elements = response.data.map((item: any) => ({
               id: item.id,
@@ -82,7 +83,6 @@ export class LayoutComponent implements OnInit {
             return;
           }
 
-          this.hideMatProgressBar();
           this.openDialog("Dashboard", response.message, ResponseTypeColor.ERROR, null);
         },
         error: (err) => {
@@ -91,8 +91,8 @@ export class LayoutComponent implements OnInit {
         }
       });
     } catch (error) {
-      console.error('Error fetching menu', error);
-      alert('Failed to load menu');
+      this.hideMatProgressBar();
+      this.openDialog("Dashboard", "Internal server error", ResponseTypeColor.ERROR, null);
     }
   }
 
