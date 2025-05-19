@@ -98,26 +98,23 @@ export class LayoutComponent implements OnInit {
     }
   }
 
+  ResetSelectedMenu(id: string, menu: any) {
+    if (id !== menu.id) {
+      const item = document.getElementById(`menu_${id}`);
+      if (item) {
+        item.style.backgroundColor = "#212529";
+        item.style.padding = "0rem 0rem";
+      }
+    }
+  };
+
   ToggleMenu(menu: any) {
     if (menu.parent_id !== -1) {
       this.layout.forEach((element: any) => {
-        if (element.id !== menu.id) {
-          let item = document.getElementById(`menu_${element.id}`);
-          if (item) {
-            item.style.backgroundColor = "var(--bootstrap-bg-dark)";
-            item.style.padding = "0rem 0rem";
-          }
-        }
+        this.ResetSelectedMenu(element.id, menu);
+
         if (element.child) {
-          element.child.forEach((child: any) => {
-            if (child.id !== menu.id) {
-              let item = document.getElementById(`menu_${child.id}`);
-              if (item) {
-                item.style.backgroundColor = "var(--bootstrap-bg-dark)";
-                item.style.padding = "0rem 0rem";
-              }
-            }
-          });
+          element.child.forEach((child: any) => this.ResetSelectedMenu(child.id, menu));
         }
       });
 
