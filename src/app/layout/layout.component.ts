@@ -27,15 +27,15 @@ export class LayoutComponent implements OnInit {
   layout: any[] = [];
 
   iconMap: { [key: string]: string } = {
-    home: 'assets/Images/home.svg',
-    dashboard: 'assets/Images/dashboard.svg',
-    upload: 'assets/Images/upload.svg',
-    profile: 'assets/Images/profile.svg',
-    logout: 'assets/Images/logout.svg',
-    manage: 'assets/Images/manage.svg',
-    uploaded_video: 'assets/Images/uploaded_video.svg',
-    deleted_video: 'assets/Images/delete.svg',
-    down_arrow: 'assets/Images/down_arrow.svg'
+    home: 'assets/images/home.svg',
+    dashboard: 'assets/images/dashboard.svg',
+    upload: 'assets/images/upload.svg',
+    profile: 'assets/images/profile.svg',
+    logout: 'assets/images/logout.svg',
+    manage: 'assets/images/manage.svg',
+    uploaded_video: 'assets/images/uploaded_video.svg',
+    deleted_video: 'assets/images/delete.svg',
+    down_arrow: 'assets/images/down_arrow.svg'
   };
 
   constructor(
