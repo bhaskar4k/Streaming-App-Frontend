@@ -26,14 +26,6 @@ export class LoginComponent implements OnInit {
   login = { email: '', password: '' };
   signUp = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
-  showAlertModal = false;
-  headerTextOfAlertModal: string | null = null;
-  bodyTextOfAlertModal: string | null = null;
-  colorOfAlertModal = 'green';
-
-  private loadAlertModal: any;
-  private apiResponseStatus: number | null = null;
-
   private encryptionDecryption: EncryptionDecryption = new EncryptionDecryption();
 
   constructor(
