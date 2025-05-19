@@ -83,6 +83,23 @@ export class LayoutComponent implements OnInit {
     }
   }
 
+  OpenCloseMenu() {
+    const custom_menu = document.getElementsByClassName('custom_menu');
+    const custom_body = document.getElementsByClassName('custom_body');
+
+    const widthCalc = `calc(100vw - 20rem)`;
+
+    if ((custom_menu[0] as HTMLElement).style.width === "18rem") {
+      (custom_menu[0] as HTMLElement).style.width = "0px";
+      // (custom_menu[0] as HTMLElement).style.padding = "0px";
+      (custom_body[0] as HTMLElement).style.width = "100vw";
+    } else {
+      (custom_menu[0] as HTMLElement).style.width = "18rem";
+      // (custom_menu[0] as HTMLElement).style.padding = "0.5rem";
+      (custom_body[0] as HTMLElement).style.width = widthCalc;
+    }
+  }
+
   ToggleMenu(menu: any) {
     if (menu.parent_id !== -1) {
       window.location.href = menu.route_name;
@@ -103,9 +120,9 @@ export class LayoutComponent implements OnInit {
       const custom_menu = document.getElementsByClassName('custom_menu');
       const custom_body = document.getElementsByClassName('custom_body');
 
-      if (custom_menu.length > 0 && custom_body.length > 0) {
+      if (main_content.length > 0 && custom_menu.length > 0 && custom_body.length > 0) {
         const heightCalc = `calc(100vh - ${height}px)`;
-        
+
         (main_content[0] as HTMLElement).style.height = heightCalc;
         (custom_menu[0] as HTMLElement).style.height = heightCalc;
         (custom_body[0] as HTMLElement).style.height = heightCalc;

@@ -1,6 +1,7 @@
 <nav class="navbar navbar-dark bg-dark pt-3 pb-3">
   <div class="d-flex align-items-center" style="margin-left: 0.5rem;">
-    <fa-icon [icon]="faBars" class="me-3" style="color: white; font-size: 1.5rem;"></fa-icon>
+    <fa-icon [icon]="faBars" class="me-3 cursor_pointer" style="color: white; font-size: 1.5rem;"
+      (click)="OpenCloseMenu()"></fa-icon>
     <a class="navbar-brand cursor_pointer fs-4" style="margin-top: -2px;" (click)="loadHomePage()">Streaming App</a>
   </div>
 </nav>
@@ -8,29 +9,32 @@
 
 <div class="main_content">
   <div class="custom_menu bg-dark">
-    <div *ngFor="let menu of layout">
-      <div class="a_custom_menu_item cursor_pointer" (click)="ToggleMenu(menu)">
-        <div class="custom_menu_item">
-          <img src="images/a_menu_item_image.svg" class="menu_icons" />
-          <span class="menu_item_text">{{menu.menu_name}}</span>
+    <div class="custom_menu_container">
+      <div *ngFor="let menu of layout">
+        <div class="a_custom_menu_item cursor_pointer" (click)="ToggleMenu(menu)">
+          <div class="custom_menu_item">
+            <img src="images/a_menu_item_image.svg" class="menu_icons" />
+            <span class="menu_item_text">{{menu.menu_name}}</span>
+          </div>
+          <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"
+            [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
         </div>
-        <fa-icon *ngIf="menu.parent_id === -1" [icon]="faChevronDown" class="menu_item_expand_icon"
-          [ngClass]="{ 'rotated': menu.is_expanded }"></fa-icon>
-      </div>
 
 
-      <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
-        <div *ngFor="let sub of menu.child">
-          <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
-            <div class="custom_menu_item">
-              <img src="images/a_menu_item_image.svg" class="menu_icons" />
-              <span class="menu_item_text">{{sub.menu_name}}</span>
+        <div [@submenuToggle]="menu.is_expanded ? 'expanded' : 'collapsed'">
+          <div *ngFor="let sub of menu.child">
+            <div class="a_custom_menu_item sub_item cursor_pointer" (click)="ToggleMenu(sub)">
+              <div class="custom_menu_item">
+                <img src="images/a_menu_item_image.svg" class="menu_icons" />
+                <span class="menu_item_text">{{sub.menu_name}}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 
   <div class="custom_body">
     <router-outlet></router-outlet>
