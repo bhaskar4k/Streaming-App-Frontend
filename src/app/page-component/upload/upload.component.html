@@ -45,15 +45,15 @@
         <small class="form-text text-muted">{{newVideoDescription.length}} / {{maxCharacterDescription}}</small>
     </div>
 
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+    <div class="d-flex flex-column align-items-center flex-md-row justify-content-between align-items-start gap-4">
         <!-- Thumbnail Upload -->
-        <div class="border border-dashed p-3 rounded text-center w-75" [class.bg-light]="isThumbnailDragOver"
+        <div class="mx-auto border border-dashed p-3 rounded text-center w-100 w-lg-50" [class.bg-light]="isThumbnailDragOver"
             (dragover)="onThumbnailDragOver($event)" (dragleave)="onThumbnailDragLeave($event)"
             (drop)="onThumbnailDrop($event)">
             <div *ngIf="!thumbnail">
                 <p class="fw-bold text-muted">Drop thumbnail here</p>
                 <p class="text-muted">or</p>
-                <input type="file" accept="image/*" (change)="thumbnailSave($event)" class="form-control w-auto mx-auto"
+                <input type="file" accept="image/*" (change)="thumbnailSave($event)" class="form-control"
                     required />
             </div>
 
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Switch + Save Button -->
-        <div class="d-flex gap-3 align-items-center">
+        <div class="d-flex flex-column align-items-center gap-3 align-items-center">
             <div class="form-check form-switch">
                 <input type="checkbox" class="form-check-input" id="video_status_toggle"
                     (change)="handleVideoStatusToggleSwitch()" [checked]="videoPublicityStatus === 1" />
@@ -76,7 +76,7 @@
                 </label>
             </div>
 
-            <button *ngIf="videoUploadSuccess" class="btn btn-primary" (click)="saveVideoInfo()">Save</button>
+            <button *ngIf="videoUploadSuccess" class="btn btn-sm btn-primary" (click)="saveVideoInfo()">Save</button>
         </div>
     </div>
 
