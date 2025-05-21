@@ -3,12 +3,16 @@
 
     <form class="mb-4">
         <div class="mb-3 border border-dashed p-4 text-center rounded" id="dropcontainer">
-            <div *ngIf="fileNotUploaded">
-                <p class="text-muted fw-bold">Drop video files here</p>
-                <p class="text-muted">or</p>
-                <input type="file" accept="video/*" (change)="handleVideoUpload($event)"
-                    class="form-control w-auto mx-auto" required />
+            <div class="border rounded p-4 text-center" *ngIf="fileNotUploaded" [class.bg-light]="isDragOver"
+                (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onFileDrop($event)">
+                <div>
+                    <p class="text-muted fw-bold">Drop video files here</p>
+                    <p class="text-muted">or</p>
+                    <input type="file" accept=".mp4" (change)="handleVideoUpload($event)"
+                        class="form-control w-auto mx-auto" required />
+                </div>
             </div>
+
 
             <div *ngIf="!fileNotUploaded" class="text-center">
                 <h5 *ngIf="!videoUploadSuccess" class="text-primary">Uploading...</h5>

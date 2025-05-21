@@ -33,10 +33,33 @@ export class UploadComponent implements OnInit {
   colorOfAlertModal = 'green';
 
   private loadAlertModal: any = null;
+  isDragOver: boolean = false;
 
-  constructor(private uploadService: UploadService) {}
+  constructor(private uploadService: UploadService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = false;
+  }
+
+  onFileDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragOver = false;
+
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type === 'video/mp4') {
+      this.handleVideoUpload({ target: { files: [file] } } as any);
+    } else {
+      alert('Please upload an MP4 file.');
+    }
+  }
 
   handleVideoUpload(event: any): void {
     this.fileNotUploaded = false;
