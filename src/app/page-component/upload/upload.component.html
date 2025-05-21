@@ -61,10 +61,11 @@
             <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">
                 <span class="text-success">{{thumbnailName}}</span>
                 <div class="d-flex flex-row-reverse w-100">
-                    <button class="btn btn-outline-danger btn-sm" (click)="removeThumbnail($event)">
-                        <img src="images/remove-file.svg" alt="Remove" class="me-2" style="width: 1.5rem" />
+                    <button class="btn btn-outline-secondary btn-sm" (click)="removeThumbnail($event)">
+                        <fa-icon [icon]="faTrash"></fa-icon>
                         Remove
                     </button>
+
                 </div>
             </div>
         </div>

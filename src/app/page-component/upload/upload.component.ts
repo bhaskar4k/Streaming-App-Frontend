@@ -7,10 +7,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CustomAlertComponent } from '../../common-component/custom-alert/custom-alert.component';
 import { ResponseTypeColor } from '../../constants/common-constants';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-upload',
-  imports: [CommonModule, FormsModule, MatDialogModule, MatProgressBarModule],
+  imports: [CommonModule, FormsModule, MatDialogModule, MatProgressBarModule, FontAwesomeModule],
   standalone: true,
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
@@ -18,6 +20,8 @@ import { ResponseTypeColor } from '../../constants/common-constants';
 export class UploadComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   matProgressBarVisible = false;
+
+  faTrash = faTrash;
 
   fileNotUploaded = true;
   videoPublicityStatus = 0;
