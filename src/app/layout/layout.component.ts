@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faBars } from '@fortawesome/free-solid-svg-icons';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { CustomConfirmDialogComponent } from '../common-component/custom-confirm-dialog/custom-confirm-dialog.component';
 
 @Component({
   selector: 'app-layout',
@@ -123,7 +124,22 @@ export class LayoutComponent implements OnInit {
         item.style.backgroundColor = "var(--bootstrap-bg-dark-light)";
         item.style.padding = "0.5rem 1rem";
       }
-      this.router.navigate([menu.route_name]);
+
+      debugger;
+      if (menu.route_name === "/logout") {
+        const dialogRef = this.dialog.open(CustomConfirmDialogComponent, {
+          data: { text: "You are about to logout. Proceed?" }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === true) {
+            this.router.navigate([menu.route_name]);
+          }
+        });
+      } else {
+        this.router.navigate([menu.route_name]);
+      }
+
       return;
     }
 
