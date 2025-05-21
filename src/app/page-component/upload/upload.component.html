@@ -1,65 +1,76 @@
-<form class="mb-4">
-  <div class="mb-3 border border-dashed p-4 text-center rounded" id="dropcontainer">
-    <div *ngIf="fileNotUploaded">
-      <p class="text-muted fw-bold">Drop video files here</p>
-      <p class="text-muted">or</p>
-      <input type="file" accept="video/*" (change)="handleVideoUpload($event)" class="form-control w-auto mx-auto" required />
+<div class="container">
+    <h3 class="text-muted mb-3 container_header">Upload Video</h3>
+
+    <form class="mb-4">
+        <div class="mb-3 border border-dashed p-4 text-center rounded" id="dropcontainer">
+            <div *ngIf="fileNotUploaded">
+                <p class="text-muted fw-bold">Drop video files here</p>
+                <p class="text-muted">or</p>
+                <input type="file" accept="video/*" (change)="handleVideoUpload($event)"
+                    class="form-control w-auto mx-auto" required />
+            </div>
+
+            <div *ngIf="!fileNotUploaded" class="text-center">
+                <h5 *ngIf="!videoUploadSuccess" class="text-primary">Uploading...</h5>
+                <h5 *ngIf="videoUploadSuccess" class="text-success">Uploaded</h5>
+                <h5>&nbsp;({{progress}}%)</h5>
+            </div>
+
+            <div *ngIf="progress > 0" class="progress mt-3">
+                <div class="progress-bar" role="progressbar" [style.width.%]="progress" aria-valuemin="0"
+                    aria-valuemax="100">{{progress}}%</div>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="video_title" [maxLength]="maxCharacterTitle"
+                [(ngModel)]="newVideoTitle" name="title" />
+        </div>
+        <small class="form-text text-muted">{{newVideoTitle.length}} / {{maxCharacterTitle}}</small>
     </div>
 
-    <div *ngIf="!fileNotUploaded" class="text-center">
-      <h5 *ngIf="!videoUploadSuccess" class="text-primary">Uploading...</h5>
-      <h5 *ngIf="videoUploadSuccess" class="text-success">Uploaded</h5>
-      <h5>&nbsp;({{progress}}%)</h5>
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <textarea class="form-control" rows="5" id="video_description" [maxLength]="maxCharacterDescription"
+                [(ngModel)]="newVideoDescription" name="description"></textarea>
+        </div>
+        <small class="form-text text-muted">{{newVideoDescription.length}} / {{maxCharacterDescription}}</small>
     </div>
 
-    <div *ngIf="progress > 0" class="progress mt-3">
-      <div class="progress-bar" role="progressbar" [style.width.%]="progress" aria-valuemin="0" aria-valuemax="100">{{progress}}%</div>
-    </div>
-  </div>
-</form>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+        <!-- Thumbnail Upload -->
+        <div class="flex-grow-1 border border-dashed p-3 rounded text-center">
+            <div *ngIf="!thumbnail">
+                <p class="fw-bold text-muted">Drop thumbnail here</p>
+                <p class="text-muted">or</p>
+                <input type="file" accept="image/*" (change)="thumbnailSave($event)" class="form-control w-auto mx-auto"
+                    required />
+            </div>
 
-<div class="mb-4">
-  <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
-  <div class="input-group">
-    <input type="text" class="form-control" id="video_title" [maxLength]="maxCharacterTitle" [(ngModel)]="newVideoTitle" name="title" />
-  </div>
-  <small class="form-text text-muted">{{newVideoTitle.length}} / {{maxCharacterTitle}}</small>
-</div>
+            <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">
+                <span class="text-success">{{thumbnailName}}</span>
+                <button class="btn btn-outline-danger btn-sm" (click)="removeThumbnail($event)">
+                    <img src="assets/remove-file.svg" alt="Remove" class="me-2" style="width: 16px;"> Remove
+                </button>
+            </div>
+        </div>
 
-<div class="mb-4">
-  <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
-  <div class="input-group">
-    <textarea class="form-control" rows="5" id="video_description" [maxLength]="maxCharacterDescription" [(ngModel)]="newVideoDescription" name="description"></textarea>
-  </div>
-  <small class="form-text text-muted">{{newVideoDescription.length}} / {{maxCharacterDescription}}</small>
-</div>
+        <!-- Switch + Save Button -->
+        <div class="d-flex flex-column gap-3 align-items-center">
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input" id="video_status_toggle"
+                    (change)="handleVideoStatusToggleSwitch()" [checked]="videoPublicityStatus === 1" />
+                <label class="form-check-label" for="video_status_toggle">
+                    {{ videoPublicityStatus === 1 ? 'Public' : 'Private' }}
+                </label>
+            </div>
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
-  <!-- Thumbnail Upload -->
-  <div class="flex-grow-1 border border-dashed p-3 rounded text-center">
-    <div *ngIf="!thumbnail">
-      <p class="fw-bold text-muted">Drop thumbnail here</p>
-      <p class="text-muted">or</p>
-      <input type="file" accept="image/*" (change)="thumbnailSave($event)" class="form-control w-auto mx-auto" required />
-    </div>
-
-    <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">
-      <span class="text-success">{{thumbnailName}}</span>
-      <button class="btn btn-outline-danger btn-sm" (click)="removeThumbnail($event)">
-        <img src="assets/remove-file.svg" alt="Remove" class="me-2" style="width: 16px;"> Remove
-      </button>
-    </div>
-  </div>
-
-  <!-- Switch + Save Button -->
-  <div class="d-flex flex-column gap-3 align-items-center">
-    <div class="form-check form-switch">
-      <input type="checkbox" class="form-check-input" id="video_status_toggle" (change)="handleVideoStatusToggleSwitch()" [checked]="videoPublicityStatus === 1" />
-      <label class="form-check-label" for="video_status_toggle">
-        {{ videoPublicityStatus === 1 ? 'Public' : 'Private' }}
-      </label>
+            <button *ngIf="videoUploadSuccess" class="btn btn-primary" (click)="saveVideoInfo()">Save</button>
+        </div>
     </div>
 
-    <button *ngIf="videoUploadSuccess" class="btn btn-primary" (click)="saveVideoInfo()">Save</button>
-  </div>
 </div>

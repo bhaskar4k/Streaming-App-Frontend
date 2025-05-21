@@ -70,6 +70,14 @@ body {
     color: var(--default-theme);
 }
 
+.container_header{
+    font-weight: 700;
+    background-color: var(--light);
+    padding: 1rem 0.4rem;
+    border-radius: 0.7rem;
+    text-align: center;
+}
+
 .cursor_pointer{
     cursor: pointer;
 }
