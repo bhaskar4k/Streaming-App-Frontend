@@ -56,7 +56,7 @@
 }
 
 .custom_body {
-  width: calc(100vw - 20rem);
+  width: calc(100vw - 18rem);
   height: 100vh;
   transition: 0.3s all ease-in-out;
 }

@@ -88,7 +88,7 @@ export class LayoutComponent implements OnInit {
     const custom_menu = document.getElementsByClassName('custom_menu');
     const custom_body = document.getElementsByClassName('custom_body');
 
-    const widthCalc = `calc(100vw - 20rem)`;
+    const widthCalc = `calc(100vw - 18rem)`;
 
     if ((custom_menu[0] as HTMLElement).style.width === "18rem") {
       (custom_menu[0] as HTMLElement).style.width = "0px";
