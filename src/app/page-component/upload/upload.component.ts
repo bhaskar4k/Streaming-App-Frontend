@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { UploadService } from '../../service/upload/upload.service';
 import { Environment } from '../../constants/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CustomAlertComponent } from '../../common-component/custom-alert/custom-alert.component';
+import { ResponseTypeColor } from '../../constants/common-constants';
 
 @Component({
   selector: 'app-upload',
@@ -14,6 +16,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
+  matProgressBarVisible = false;
+
   fileNotUploaded = true;
   videoPublicityStatus = 0;
   videoUploadSuccess = false;
@@ -32,11 +37,13 @@ export class UploadComponent implements OnInit {
   bodyTextOfAlertModal: string | null = null;
   colorOfAlertModal = 'green';
 
-  private loadAlertModal: any = null;
   isDragOver: boolean = false;
   isThumbnailDragOver: boolean = false;
 
-  constructor(private uploadService: UploadService) { }
+  constructor(
+    private uploadService: UploadService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void { }
 
@@ -96,26 +103,26 @@ export class UploadComponent implements OnInit {
   }
 
   onThumbnailDragOver(event: DragEvent): void {
-  event.preventDefault();
-  this.isThumbnailDragOver = true;
-}
-
-onThumbnailDragLeave(event: DragEvent): void {
-  event.preventDefault();
-  this.isThumbnailDragOver = false;
-}
-
-onThumbnailDrop(event: DragEvent): void {
-  event.preventDefault();
-  this.isThumbnailDragOver = false;
-
-  const file = event.dataTransfer?.files?.[0];
-  if (file && file.type.startsWith('image/')) {
-    this.thumbnailSave({ target: { files: [file] } } as any);
-  } else {
-    alert('Please drop a valid image file.');
+    event.preventDefault();
+    this.isThumbnailDragOver = true;
   }
-}
+
+  onThumbnailDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isThumbnailDragOver = false;
+  }
+
+  onThumbnailDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isThumbnailDragOver = false;
+
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      this.thumbnailSave({ target: { files: [file] } } as any);
+    } else {
+      alert('Please drop a valid image file.');
+    }
+  }
 
   thumbnailSave(event: any): void {
     const file = event.target.files[0];
@@ -139,41 +146,49 @@ onThumbnailDrop(event: DragEvent): void {
     if (this.thumbnail) formData.append("thumbnail", this.thumbnail);
     formData.append("video_info", JSON.stringify(this.videoInfo));
 
-    this.uploadService.DoUploadVideoInfo(formData).subscribe({
-      next: (response: any) => {
-        if (response.status === 200) {
-          //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorSuccess, response.message);
-        } else {
-          //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorError, response.message);
+    this.activeMatProgressBar();
+
+    try {
+      this.uploadService.DoUploadVideoInfo(formData).subscribe({
+        next: (response: any) => {
+          this.hideMatProgressBar();
+
+          if (response.status === 200) {
+            this.openDialog('Upload', response.message, ResponseTypeColor.SUCCESS, null);
+          } else {
+            this.openDialog('Upload', response.message, ResponseTypeColor.SUCCESS, null);
+          }
+        },
+        error: () => {
+          this.hideMatProgressBar();
+          this.openDialog('Upload', "Internal server error.", ResponseTypeColor.SUCCESS, null);
         }
-      },
-      error: () => {
-        //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorError, "Failed to upload video info.");
+      });
+    } catch (e) {
+      this.hideMatProgressBar();
+      this.openDialog('Upload', "Internal server error.", ResponseTypeColor.SUCCESS, null);
+    }
+  }
+
+  activeMatProgressBar() {
+    this.matProgressBarVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  hideMatProgressBar() {
+    this.matProgressBarVisible = false;
+    this.cdr.detectChanges();
+  }
+
+  openDialog(dialogTitle: string, dialogText: string, dialogType: number, navigateRoute: string | null): void {
+    const dialogRef = this.dialog.open(CustomAlertComponent, {
+      data: { title: dialogTitle, text: dialogText, type: dialogType }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      if (navigateRoute) {
+        window.location.href = navigateRoute;
       }
     });
-  }
-
-  alert(header: string, color: string, message: string): void {
-    this.closeAlertModal();
-    this.colorOfAlertModal = color;
-    this.openAlertModal(header, message);
-
-    this.loadAlertModal = setTimeout(() => {
-      this.closeAlertModal();
-    }, 5000);
-  }
-
-  openAlertModal(header: string, body: string): void {
-    this.headerTextOfAlertModal = header;
-    this.bodyTextOfAlertModal = body;
-    this.showAlertModal = true;
-  }
-
-  closeAlertModal(): void {
-    this.showAlertModal = false;
-    this.headerTextOfAlertModal = null;
-    this.bodyTextOfAlertModal = null;
-    clearTimeout(this.loadAlertModal);
-    this.loadAlertModal = null;
   }
 }
