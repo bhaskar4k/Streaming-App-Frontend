@@ -125,7 +125,6 @@ export class LayoutComponent implements OnInit {
         item.style.padding = "0.5rem 1rem";
       }
 
-      debugger;
       if (menu.route_name === "/logout") {
         const dialogRef = this.dialog.open(CustomConfirmDialogComponent, {
           data: { text: "You are about to logout. Proceed?" }
