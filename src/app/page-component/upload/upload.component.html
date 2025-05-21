@@ -47,7 +47,7 @@
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
         <!-- Thumbnail Upload -->
-        <div class="flex-grow-1 border border-dashed p-3 rounded text-center" [class.bg-light]="isThumbnailDragOver"
+        <div class="border border-dashed p-3 rounded text-center w-75" [class.bg-light]="isThumbnailDragOver"
             (dragover)="onThumbnailDragOver($event)" (dragleave)="onThumbnailDragLeave($event)"
             (drop)="onThumbnailDrop($event)">
             <div *ngIf="!thumbnail">
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Switch + Save Button -->
-        <div class="d-flex flex-column gap-3 align-items-center">
+        <div class="d-flex gap-3 align-items-center">
             <div class="form-check form-switch">
                 <input type="checkbox" class="form-check-input" id="video_status_toggle"
                     (change)="handleVideoStatusToggleSwitch()" [checked]="videoPublicityStatus === 1" />
