@@ -50,7 +50,7 @@ export class UploadComponent implements OnInit {
     const formData = new FormData();
     formData.append("video", file);
 
-    this.uploadService.doUploadVideo(formData, (progress: number) => {
+    this.uploadService.DoUploadVideo(formData, (progress: number) => {
       this.progress = progress;
     }).subscribe({
       next: (result: any) => {
@@ -93,7 +93,7 @@ export class UploadComponent implements OnInit {
     if (this.thumbnail) formData.append("thumbnail", this.thumbnail);
     formData.append("video_info", JSON.stringify(this.videoInfo));
 
-    this.uploadService.doUploadVideoInfo(formData).subscribe({
+    this.uploadService.DoUploadVideoInfo(formData).subscribe({
       next: (response: any) => {
         if (response.status === 200) {
           //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorSuccess, response.message);

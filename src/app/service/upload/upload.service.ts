@@ -13,7 +13,7 @@ export class UploadService {
 
   private BASE_URL = EndpointMicroservice.upload;
 
-  doUploadVideo(formData: FormData, onProgress: (progress: number) => void): Observable<any> {
+  DoUploadVideo(formData: FormData, onProgress: (progress: number) => void): Observable<any> {
     return this.http.post(this.BASE_URL + EndpointUpload.upload_video, formData, {
       reportProgress: true,
       observe: 'events'
@@ -35,8 +35,7 @@ export class UploadService {
     );
   }
 
-
-  doUploadVideoInfo(formData: FormData): Observable<any> {
+  DoUploadVideoInfo(formData: FormData): Observable<any> {
     return this.http.post(this.BASE_URL + EndpointUpload.upload_video_info, formData);
   }
 }
