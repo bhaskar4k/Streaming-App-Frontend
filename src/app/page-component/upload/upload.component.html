@@ -1,67 +1,65 @@
-<!-- <app-alert-modal 
-  *ngIf="showAlertModal"
-  [headerText]="headerTextOfAlertModal"
-  [bodyText]="bodyTextOfAlertModal"
-  [alertColor]="colorOfAlertModal"
-  (close)="closeAlertModal()">
-</app-alert-modal> -->
-
-<form class="file-upload-form">
-  <label class="drop-container" id="dropcontainer">
-    <span *ngIf="fileNotUploaded" class="drop-title">Drop video files here</span>
-    <span *ngIf="fileNotUploaded" class="drop-or-text">or</span>
-    <input *ngIf="fileNotUploaded" type="file" accept="video/*" (change)="handleVideoUpload($event)" required />
-
-    <div *ngIf="!fileNotUploaded" class="uploading-percentage-text">
-      <h1 *ngIf="!videoUploadSuccess" class="uploading-text"></h1>
-      <h1 *ngIf="videoUploadSuccess">Uploaded</h1>
-      <h1>&nbsp;({{progress}}%)</h1>
+<form class="mb-4">
+  <div class="mb-3 border border-dashed p-4 text-center rounded" id="dropcontainer">
+    <div *ngIf="fileNotUploaded">
+      <p class="text-muted fw-bold">Drop video files here</p>
+      <p class="text-muted">or</p>
+      <input type="file" accept="video/*" (change)="handleVideoUpload($event)" class="form-control w-auto mx-auto" required />
     </div>
 
-    <div *ngIf="progress > 0" class="upload_progress_bar">
-      <div class="progress_bar_container">
-        <div class="upload_progress" [style.width.%]="progress"></div>
-      </div>
+    <div *ngIf="!fileNotUploaded" class="text-center">
+      <h5 *ngIf="!videoUploadSuccess" class="text-primary">Uploading...</h5>
+      <h5 *ngIf="videoUploadSuccess" class="text-success">Uploaded</h5>
+      <h5>&nbsp;({{progress}}%)</h5>
     </div>
-  </label>
+
+    <div *ngIf="progress > 0" class="progress mt-3">
+      <div class="progress-bar" role="progressbar" [style.width.%]="progress" aria-valuemin="0" aria-valuemax="100">{{progress}}%</div>
+    </div>
+  </div>
 </form>
 
-<div class="title">
-  <span>Title<span class="required_color">*</span></span>
-  <div class="input-container">
-    <input type="text" class="upload_input upload_normal_input" id="video_title" [maxLength]="maxCharacterTitle" [(ngModel)]="newVideoTitle" name="title" />
-    <span id="charCountTitle">{{newVideoTitle.length}}/{{maxCharacterTitle}}</span>
+<div class="mb-4">
+  <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="video_title" [maxLength]="maxCharacterTitle" [(ngModel)]="newVideoTitle" name="title" />
   </div>
+  <small class="form-text text-muted">{{newVideoTitle.length}} / {{maxCharacterTitle}}</small>
 </div>
 
-<div class="description">
-  <span>Description<span class="required_color">*</span></span>
-  <div class="input-container">
-    <textarea class="upload_input upload_textarea" rows="10" id="video_description" [maxLength]="maxCharacterDescription" [(ngModel)]="newVideoDescription" name="description"></textarea>
-    <span id="charCountDescription">{{newVideoDescription.length}}/{{maxCharacterDescription}}</span>
+<div class="mb-4">
+  <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <textarea class="form-control" rows="5" id="video_description" [maxLength]="maxCharacterDescription" [(ngModel)]="newVideoDescription" name="description"></textarea>
   </div>
+  <small class="form-text text-muted">{{newVideoDescription.length}} / {{maxCharacterDescription}}</small>
 </div>
 
-<div class="thumbnail_and_save">
-  <label class="drop-container-thumbnail" id="dropcontainer">
-    <span *ngIf="!thumbnail" class="drop-title">Drop thumbnail here</span>
-    <span *ngIf="!thumbnail" class="drop-or-text">or</span>
-    <input *ngIf="!thumbnail" type="file" accept="image/*" (change)="thumbnailSave($event)" required />
-    <span *ngIf="thumbnail" class="drop-filename-text">{{thumbnailName}}</span>
-    <span *ngIf="thumbnail" class="remove_thumbnail_btn">
-      <img src="assets/remove-file.svg" class="menu-icons" (click)="removeThumbnail($event)" />
-    </span>
-  </label>
-
-  <div class="video_right_side_buttons">
-    <div class="video_publicity_switch_container">
-      <span class="video_publicity_name">Private</span>
-      <div class="video_publicity_switch" (click)="handleVideoStatusToggleSwitch()">
-        <div [id]="'video_status_toggle'" [ngClass]="{'toggle-right': videoPublicityStatus === 1}"></div>
-      </div>
-      <span class="video_publicity_name">Public</span>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+  <!-- Thumbnail Upload -->
+  <div class="flex-grow-1 border border-dashed p-3 rounded text-center">
+    <div *ngIf="!thumbnail">
+      <p class="fw-bold text-muted">Drop thumbnail here</p>
+      <p class="text-muted">or</p>
+      <input type="file" accept="image/*" (change)="thumbnailSave($event)" class="form-control w-auto mx-auto" required />
     </div>
 
-    <button *ngIf="videoUploadSuccess" class="video-save-button" (click)="saveVideoInfo()">Save</button>
+    <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">
+      <span class="text-success">{{thumbnailName}}</span>
+      <button class="btn btn-outline-danger btn-sm" (click)="removeThumbnail($event)">
+        <img src="assets/remove-file.svg" alt="Remove" class="me-2" style="width: 16px;"> Remove
+      </button>
+    </div>
+  </div>
+
+  <!-- Switch + Save Button -->
+  <div class="d-flex flex-column gap-3 align-items-center">
+    <div class="form-check form-switch">
+      <input type="checkbox" class="form-check-input" id="video_status_toggle" (change)="handleVideoStatusToggleSwitch()" [checked]="videoPublicityStatus === 1" />
+      <label class="form-check-label" for="video_status_toggle">
+        {{ videoPublicityStatus === 1 ? 'Public' : 'Private' }}
+      </label>
+    </div>
+
+    <button *ngIf="videoUploadSuccess" class="btn btn-primary" (click)="saveVideoInfo()">Save</button>
   </div>
 </div>
