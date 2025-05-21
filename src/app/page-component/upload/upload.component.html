@@ -47,7 +47,9 @@
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
         <!-- Thumbnail Upload -->
-        <div class="flex-grow-1 border border-dashed p-3 rounded text-center">
+        <div class="flex-grow-1 border border-dashed p-3 rounded text-center" [class.bg-light]="isThumbnailDragOver"
+            (dragover)="onThumbnailDragOver($event)" (dragleave)="onThumbnailDragLeave($event)"
+            (drop)="onThumbnailDrop($event)">
             <div *ngIf="!thumbnail">
                 <p class="fw-bold text-muted">Drop thumbnail here</p>
                 <p class="text-muted">or</p>
@@ -58,7 +60,8 @@
             <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">
                 <span class="text-success">{{thumbnailName}}</span>
                 <button class="btn btn-outline-danger btn-sm" (click)="removeThumbnail($event)">
-                    <img src="assets/remove-file.svg" alt="Remove" class="me-2" style="width: 16px;"> Remove
+                    <img src="assets/remove-file.svg" alt="Remove" class="me-2" style="width: 16px;" />
+                    Remove
                 </button>
             </div>
         </div>

@@ -34,6 +34,7 @@ export class UploadComponent implements OnInit {
 
   private loadAlertModal: any = null;
   isDragOver: boolean = false;
+  isThumbnailDragOver: boolean = false;
 
   constructor(private uploadService: UploadService) { }
 
@@ -93,6 +94,28 @@ export class UploadComponent implements OnInit {
   handleVideoStatusToggleSwitch(): void {
     this.videoPublicityStatus = this.videoPublicityStatus === 0 ? 1 : 0;
   }
+
+  onThumbnailDragOver(event: DragEvent): void {
+  event.preventDefault();
+  this.isThumbnailDragOver = true;
+}
+
+onThumbnailDragLeave(event: DragEvent): void {
+  event.preventDefault();
+  this.isThumbnailDragOver = false;
+}
+
+onThumbnailDrop(event: DragEvent): void {
+  event.preventDefault();
+  this.isThumbnailDragOver = false;
+
+  const file = event.dataTransfer?.files?.[0];
+  if (file && file.type.startsWith('image/')) {
+    this.thumbnailSave({ target: { files: [file] } } as any);
+  } else {
+    alert('Please drop a valid image file.');
+  }
+}
 
   thumbnailSave(event: any): void {
     const file = event.target.files[0];
