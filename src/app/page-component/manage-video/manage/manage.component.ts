@@ -48,10 +48,10 @@ export class ManageComponent {
 
     if (lastSegment === "deleted-video") {
       this.page_type = page_type_info.deleted;
-      this.page_title = "Manage Deleted Videos";
+      this.page_title = "Manage";
     } else if (lastSegment === "uploaded-video") {
       this.page_type = page_type_info.uploaded;
-      this.page_title = "Manage Uploaded Videos";
+      this.page_title = "Manage";
     }
   }
 
