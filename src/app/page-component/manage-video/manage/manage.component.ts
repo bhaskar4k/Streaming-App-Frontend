@@ -12,6 +12,7 @@ import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomAlertComponent } from '../../../common-component/custom-alert/custom-alert.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ResponseTypeColor } from '../../../constants/common-constants';
 
 @Component({
   selector: 'app-manage',
@@ -28,6 +29,7 @@ export class ManageComponent {
 
   page_type_info = page_type_info;
   page_type = page_type_info.wrong;
+  page_title = "Wrong";
 
   video_data: any;
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
@@ -46,13 +48,15 @@ export class ManageComponent {
 
     if (lastSegment === "deleted-video") {
       this.page_type = page_type_info.deleted;
+      this.page_title = "Manage Deleted Videos";
     } else if (lastSegment === "uploaded-video") {
       this.page_type = page_type_info.uploaded;
+      this.page_title = "Manage Uploaded Videos";
     }
   }
 
   ngOnInit(): void {
-    if (this.page_type === "wrong") {
+    if (this.page_type === page_type_info.wrong) {
       this.router.navigate(['error']);
     } else {
       this.getUploadedVideos();
@@ -76,8 +80,8 @@ export class ManageComponent {
             this.dataSource.sort = this.sort;
           },
           error: (err) => {
-            console.error('Delete failed:', err);
             this.hideMatProgressBar();
+            this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
           }
         });
       } else if (this.page_type === page_type_info.deleted) {
@@ -93,14 +97,14 @@ export class ManageComponent {
             this.dataSource.sort = this.sort;
           },
           error: (err) => {
-            console.error('Delete failed:', err);
             this.hideMatProgressBar();
+            this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
           }
         });
       }
     } catch (err) {
-      console.error('Failed to load videos:', err);
       this.hideMatProgressBar();
+      this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
     }
   }
 
@@ -124,16 +128,20 @@ export class ManageComponent {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
             this.hideMatProgressBar();
+            this.openDialog(this.page_title, res.message, ResponseTypeColor.SUCCESS, null);
+          } else {
+            this.hideMatProgressBar();
+            this.openDialog(this.page_title, res.message, ResponseTypeColor.ERROR, null);
           }
         },
         error: (err) => {
-          console.error('Delete failed:', err);
           this.hideMatProgressBar();
+          this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
         }
       });
     } catch (error) {
-      console.error('Delete failed:', error);
       this.hideMatProgressBar();
+      this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
     }
   }
 
@@ -148,16 +156,20 @@ export class ManageComponent {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
             this.hideMatProgressBar();
+            this.openDialog(this.page_title, res.message, ResponseTypeColor.SUCCESS, null);
+          } else {
+            this.hideMatProgressBar();
+            this.openDialog(this.page_title, res.message, ResponseTypeColor.ERROR, null);
           }
         },
         error: (err) => {
-          console.error('Delete failed:', err);
           this.hideMatProgressBar();
+          this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
         }
-      });;
+      });
     } catch (error) {
-      console.error('Delete failed:', error);
       this.hideMatProgressBar();
+      this.openDialog(this.page_title, "Internal server error.", ResponseTypeColor.ERROR, null);
     }
   }
 
@@ -181,7 +193,8 @@ export class ManageComponent {
       window.URL.revokeObjectURL(url);
       this.hideMatProgressBar();
     } catch (error) {
-      console.error('Download failed:', error);
+      this.hideMatProgressBar();
+      this.openDialog(this.page_title, "Download failed.", ResponseTypeColor.ERROR, null);
     }
   }
 
