@@ -1,8 +1,6 @@
 <mat-progress-bar mode="indeterminate" *ngIf="matProgressBarVisible" class="matProgressBar"></mat-progress-bar>
 
-<div *ngIf="dataSource.data.length === 0" class="nothing_to_show">Nothing to show</div>
-
-<div *ngIf="dataSource.data.length > 0">
+<div class="container">
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
 
     <!-- Thumbnail Column -->
