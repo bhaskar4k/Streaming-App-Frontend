@@ -1,1 +1,62 @@
-<p>manage works!</p>
+<div *ngIf="dataSource.data.length === 0" class="nothing_to_show">Nothing to show</div>
+
+<div *ngIf="dataSource.data.length > 0">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+    <!-- Thumbnail Column -->
+    <ng-container matColumnDef="thumbnail">
+      <th mat-header-cell *matHeaderCellDef>Video</th>
+      <td mat-cell *matCellDef="let row">
+        <img [src]="base64Converter(row.base64EncodedImage)" class="custom_table_video_thumbnail" (click)="watchVideo(row.guid)" />
+      </td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="video_title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let row" (click)="watchVideo(row.guid)">
+        {{ row.video_title }}
+      </td>
+    </ng-container>
+
+    <!-- Visibility -->
+    <ng-container matColumnDef="visibility">
+      <th mat-header-cell *matHeaderCellDef>Visibility</th>
+      <td mat-cell *matCellDef="let row">{{ row.is_public }}</td>
+    </ng-container>
+
+    <!-- Uploaded At -->
+    <ng-container matColumnDef="uploaded_at">
+      <th mat-header-cell *matHeaderCellDef>Uploaded At</th>
+      <td mat-cell *matCellDef="let row">{{ row.trans_datetime }}</td>
+    </ng-container>
+
+    <!-- Processing Status -->
+    <ng-container matColumnDef="processing_status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">{{ row.processing_status }}</td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button (click)="downloadVideo(row.guid)" title="Download">
+          <img src="./images/download.svg" alt="download" />
+        </button>
+        <button mat-icon-button (click)="editVideo(row)" title="Edit">
+          <img src="./images/edit.svg" alt="edit" />
+        </button>
+        <button mat-icon-button (click)="deleteVideo(row.t_video_info_id)" title="Delete">
+          <img src="./images/delete.svg" alt="delete" />
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 40, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>
