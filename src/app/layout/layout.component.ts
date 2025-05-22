@@ -22,7 +22,7 @@ import { CustomConfirmDialogComponent } from '../common-component/custom-confirm
     trigger('submenuToggle', [
       state('collapsed', style({
         height: '0px',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         opacity: 0
       })),
       state('expanded', style({
@@ -30,7 +30,7 @@ import { CustomConfirmDialogComponent } from '../common-component/custom-confirm
         opacity: 1
       })),
       transition('collapsed <=> expanded', [
-        animate('300ms ease-in-out')
+        animate('200ms ease-in-out')
       ])
     ])
   ]
