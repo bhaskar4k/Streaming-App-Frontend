@@ -52,15 +52,6 @@ export class ManageComponent {
   }
 
   ngOnInit(): void {
-    const segments = this.router.url.split('/');
-    const lastSegment = segments[segments.length - 1];
-
-    if (lastSegment === "deleted-video") {
-      this.page_type = page_type_info.deleted;
-    } else if (lastSegment === "uploaded-video") {
-      this.page_type = page_type_info.uploaded;
-    }
-
     if (this.page_type === "wrong") {
       this.router.navigate(['error']);
     } else {
