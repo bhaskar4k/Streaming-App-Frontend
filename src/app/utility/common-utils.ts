@@ -24,6 +24,6 @@ export function go_back(navigate: any){
     navigate(-1);
 }
 
-export function base64toImage(base64: string) {
+export function base64toImage(base64: string): string {
     return `data:image/jpeg;base64,${base64}`
 }

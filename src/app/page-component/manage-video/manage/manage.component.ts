@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { base64toImage } from '../../../utility/common-utils';
+import { page_type_info } from '../../../model/video.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-manage',
@@ -18,7 +20,7 @@ export class ManageComponent implements AfterViewInit {
   @Input() video_list: any[] = [];
   @Input() column_name: string[] = [];
 
-  page_type = "wrong";
+  page_type = page_type_info.wrong;
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
   dataSource = new MatTableDataSource<any>([]);
 
@@ -30,39 +32,41 @@ export class ManageComponent implements AfterViewInit {
   ngOnInit(): void {
     const segments = this.router.url.split('/');
     const lastSegment = segments[segments.length - 1];
+
     if (lastSegment === "deleted-video") {
-      this.page_type = "deleted";
+      this.page_type = page_type_info.deleted;
     } else if (lastSegment === "uploaded-video") {
-      this.page_type = "uploaded";
+      this.page_type = page_type_info.uploaded;
     }
 
     if (this.page_type === "wrong") {
       this.router.navigate(['error']);
+    } else {
+      this.getUploadedVideos();
     }
-    this.getUploadedVideos();
   }
 
-  getUploadedVideos(): void {
-    this.manageVideoService.GetUploadedVideoList().subscribe({
-      next: (res) => {
-        if (res && res.status === 200 && res.data) {
-          let data = res.data;
-          data = data.map((video: any) => {
-            video.base64EncodedImage = base64toImage(video.base64EncodedImage);
-            return video;
-          });
+  async getUploadedVideos(): Promise<void> {
+    try {
+      let res: any;
 
-          this.dataSource.data = data;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        } else {
-          console.error('Unexpected response format:', res);
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load videos:', err);
+      if (this.page_type === page_type_info.uploaded) {
+        res = await firstValueFrom(this.manageVideoService.GetUploadedVideoList());
+      } else if (this.page_type === page_type_info.deleted) {
+        res = await firstValueFrom(this.manageVideoService.GetDeletedVideoList());
       }
-    });
+      
+      if (res && res.status === 200 && res.data) {
+        this.dataSource.data = res.data;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        console.error('Unexpected response format:', res);
+      }
+
+    } catch (err) {
+      console.error('Failed to load videos:', err);
+    }
   }
 
   ngAfterViewInit(): void {
