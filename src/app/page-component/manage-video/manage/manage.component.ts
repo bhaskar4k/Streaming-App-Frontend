@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit, inject, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -9,25 +9,38 @@ import { MatSort } from '@angular/material/sort';
 import { base64toImage } from '../../../utility/common-utils';
 import { page_type_info } from '../../../model/video.model';
 import { firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomAlertComponent } from '../../../common-component/custom-alert/custom-alert.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-manage',
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatButtonModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatButtonModule, MatProgressBarModule],
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
-export class ManageComponent implements AfterViewInit {
+export class ManageComponent {
+  readonly dialog = inject(MatDialog);
+  matProgressBarVisible = false;
+
   @Input() video_list: any[] = [];
   @Input() column_name: string[] = [];
 
+  page_type_info = page_type_info;
   page_type = page_type_info.wrong;
+
+  video_data: any;
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private router: Router, private manageVideoService: ManageVideoService) { }
+  constructor(
+    private router: Router,
+    private manageVideoService: ManageVideoService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     const segments = this.router.url.split('/');
@@ -48,30 +61,37 @@ export class ManageComponent implements AfterViewInit {
 
   async getUploadedVideos(): Promise<void> {
     try {
-      let res: any;
+      this.activeMatProgressBar();
 
       if (this.page_type === page_type_info.uploaded) {
-        res = await firstValueFrom(this.manageVideoService.GetUploadedVideoList());
+        this.video_data = await firstValueFrom(this.manageVideoService.GetUploadedVideoList());
       } else if (this.page_type === page_type_info.deleted) {
-        res = await firstValueFrom(this.manageVideoService.GetDeletedVideoList());
-      }
-      
-      if (res && res.status === 200 && res.data) {
-        this.dataSource.data = res.data;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        console.error('Unexpected response format:', res);
+        this.video_data = await firstValueFrom(this.manageVideoService.GetDeletedVideoList());
       }
 
+      if (this.video_data.status === 200) {
+        this.video_data = this.video_data.data;
+        this.updateVideoList();
+      } else {
+        console.error('Unexpected response format:', this.video_data);
+        this.hideMatProgressBar();
+      }
     } catch (err) {
       console.error('Failed to load videos:', err);
+      this.hideMatProgressBar();
     }
   }
 
-  ngAfterViewInit(): void {
+  updateVideoList() {
+    this.dataSource.data = this.video_data;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.hideMatProgressBar();
   }
+
+  // ngAfterViewInit(): void {
+  //   this.dataSource.paginator = this.paginator;
+  // }
 
   editVideo(video: any): void {
     this.router.navigate(['/manage/uploaded-video/edit'], {
@@ -82,19 +102,51 @@ export class ManageComponent implements AfterViewInit {
     });
   }
 
-  async deleteVideo(t_video_info_id: number): Promise<void> {
+  async deleteVideo(t_video_info_id: number) {
     try {
-      const response = await this.manageVideoService.DoDeleteVideo(t_video_info_id).toPromise();
-      if (response?.status === 200) {
-        location.reload();
-      }
+      this.activeMatProgressBar();
+      this.manageVideoService.DoDeleteVideo(t_video_info_id).subscribe({
+        next: (res) => {
+          if (res.status === 200) {
+            this.video_data = this.video_data.filter((video: any) => video.t_video_info_id !== t_video_info_id);
+            this.updateVideoList();
+          }
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          this.hideMatProgressBar();
+        }
+      });
     } catch (error) {
       console.error('Delete failed:', error);
+      this.hideMatProgressBar();
+    }
+  }
+
+  async restoreVideo(t_video_info_id: number) {
+    try {
+      this.activeMatProgressBar();
+      this.manageVideoService.DoRestoreVideo(t_video_info_id).subscribe({
+        next: (res) => {
+          if (res?.status === 200) {
+            this.video_data = this.video_data.filter((video: any) => video.t_video_info_id !== t_video_info_id);
+            this.updateVideoList();
+          }
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          this.hideMatProgressBar();
+        }
+      });;
+    } catch (error) {
+      console.error('Delete failed:', error);
+      this.hideMatProgressBar();
     }
   }
 
   async downloadVideo(guid: string): Promise<void> {
     try {
+      this.activeMatProgressBar();
       const response: any = await this.manageVideoService.DoDownloadVideo(guid).toPromise();
       const contentDisposition = response.headers.get('content-disposition');
       let filename = guid;
@@ -110,6 +162,7 @@ export class ManageComponent implements AfterViewInit {
       a.download = filename + '.mp4';
       a.click();
       window.URL.revokeObjectURL(url);
+      this.hideMatProgressBar();
     } catch (error) {
       console.error('Download failed:', error);
     }
@@ -117,5 +170,27 @@ export class ManageComponent implements AfterViewInit {
 
   watchVideo(guid: string): void {
     this.router.navigate(['/watch'], { queryParams: { v: guid, playback: 0 } });
+  }
+
+  activeMatProgressBar() {
+    this.matProgressBarVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  hideMatProgressBar() {
+    this.matProgressBarVisible = false;
+    this.cdr.detectChanges();
+  }
+
+  openDialog(dialogTitle: string, dialogText: string, dialogType: number, navigateRoute: string | null): void {
+    const dialogRef = this.dialog.open(CustomAlertComponent, {
+      data: { title: dialogTitle, text: dialogText, type: dialogType }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      if (navigateRoute) {
+        window.location.href = navigateRoute;
+      }
+    });
   }
 }

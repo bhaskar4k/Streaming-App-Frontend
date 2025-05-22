@@ -1,3 +1,5 @@
+<mat-progress-bar mode="indeterminate" *ngIf="matProgressBarVisible" class="matProgressBar"></mat-progress-bar>
+
 <div *ngIf="dataSource.data.length === 0" class="nothing_to_show">Nothing to show</div>
 
 <div *ngIf="dataSource.data.length > 0">
@@ -41,15 +43,20 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="downloadVideo(row.guid)" title="Download">
+        <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button (click)="downloadVideo(row.guid)" title="Download Video">
           <img src="./images/download.svg" alt="download" />
         </button>
-        <button mat-icon-button (click)="editVideo(row)" title="Edit">
+        <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button (click)="editVideo(row)" title="Edit Video">
           <img src="./images/edit.svg" alt="edit" />
         </button>
-        <button mat-icon-button (click)="deleteVideo(row.t_video_info_id)" title="Delete">
+        <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button (click)="deleteVideo(row.t_video_info_id)" title="Delete Video">
           <img src="./images/delete.svg" alt="delete" />
         </button>
+
+        <button *ngIf="page_type === page_type_info.deleted" mat-icon-button (click)="restoreVideo(row.t_video_info_id)" title="Restore Deleted Video">
+          <img src="./images/restore.svg" alt="restore">
+        </button>
+        
       </td>
     </ng-container>
 
