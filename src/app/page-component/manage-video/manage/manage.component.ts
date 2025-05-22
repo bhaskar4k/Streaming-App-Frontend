@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
-export class ManageComponent {
+export class ManageComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   matProgressBarVisible = false;
 
