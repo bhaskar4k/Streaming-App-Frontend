@@ -69,7 +69,7 @@ export class UploadComponent implements OnInit {
     if (file && file.type === 'video/mp4') {
       this.handleVideoUpload({ target: { files: [file] } } as any);
     } else {
-      alert('Please upload an MP4 file.');
+      this.openDialog('Upload', "Please select a video file.", ResponseTypeColor.INFO, null);
     }
   }
 
@@ -78,7 +78,7 @@ export class UploadComponent implements OnInit {
     const file = event.target.files[0];
 
     if (!file) {
-      //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorWarning, "Please select a video file.");
+      this.openDialog('Upload', "Please select a video file.", ResponseTypeColor.INFO, null);
       return;
     }
 
@@ -92,12 +92,13 @@ export class UploadComponent implements OnInit {
         if (result.status === 200) {
           this.videoUploadSuccess = true;
           this.videoInfo = result.data;
+          this.openDialog('Upload', result.message, ResponseTypeColor.SUCCESS, null);
         } else {
-          //this.alert(Environment.alert_modal_header_video_info_upload, Environment.colorError, "Error uploading video! (Internal server error)");
+          this.openDialog('Upload', result.message, ResponseTypeColor.ERROR, null);
         }
       },
       error: () => {
-        console.error("Error uploading video");
+        this.openDialog('Upload', "Error uploading video.", ResponseTypeColor.ERROR, null);
       }
     });
   }
@@ -124,7 +125,7 @@ export class UploadComponent implements OnInit {
     if (file && file.type.startsWith('image/')) {
       this.thumbnailSave({ target: { files: [file] } } as any);
     } else {
-      alert('Please drop a valid image file.');
+      this.openDialog('Upload', "Please drop a valid image file.", ResponseTypeColor.INFO, null);
     }
   }
 
@@ -160,17 +161,17 @@ export class UploadComponent implements OnInit {
           if (response.status === 200) {
             this.openDialog('Upload', response.message, ResponseTypeColor.SUCCESS, null);
           } else {
-            this.openDialog('Upload', response.message, ResponseTypeColor.SUCCESS, null);
+            this.openDialog('Upload', response.message, ResponseTypeColor.ERROR, null);
           }
         },
         error: () => {
           this.hideMatProgressBar();
-          this.openDialog('Upload', "Internal server error.", ResponseTypeColor.SUCCESS, null);
+          this.openDialog('Upload', "Internal server error.", ResponseTypeColor.ERROR, null);
         }
       });
     } catch (e) {
       this.hideMatProgressBar();
-      this.openDialog('Upload', "Internal server error.", ResponseTypeColor.SUCCESS, null);
+      this.openDialog('Upload', "Internal server error.", ResponseTypeColor.ERROR, null);
     }
   }
 
