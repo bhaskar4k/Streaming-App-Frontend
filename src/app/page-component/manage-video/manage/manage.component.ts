@@ -18,6 +18,7 @@ export class ManageComponent implements AfterViewInit {
   @Input() video_list: any[] = [];
   @Input() column_name: string[] = [];
 
+  page_type = "wrong";
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
   dataSource = new MatTableDataSource<any>([]);
 
@@ -27,6 +28,17 @@ export class ManageComponent implements AfterViewInit {
   constructor(private router: Router, private manageVideoService: ManageVideoService) { }
 
   ngOnInit(): void {
+    const segments = this.router.url.split('/');
+    const lastSegment = segments[segments.length - 1];
+    if (lastSegment === "deleted-video") {
+      this.page_type = "deleted";
+    } else if (lastSegment === "uploaded-video") {
+      this.page_type = "uploaded";
+    }
+
+    if (this.page_type === "wrong") {
+      this.router.navigate(['error']);
+    }
     this.getUploadedVideos();
   }
 
@@ -34,10 +46,15 @@ export class ManageComponent implements AfterViewInit {
     this.manageVideoService.GetUploadedVideoList().subscribe({
       next: (res) => {
         if (res && res.status === 200 && res.data) {
-          this.dataSource.data = res.data;
+          let data = res.data;
+          data = data.map((video: any) => {
+            video.base64EncodedImage = base64toImage(video.base64EncodedImage);
+            return video;
+          });
+
+          this.dataSource.data = data;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          console.log(res.data)
         } else {
           console.error('Unexpected response format:', res);
         }
@@ -46,24 +63,6 @@ export class ManageComponent implements AfterViewInit {
         console.error('Failed to load videos:', err);
       }
     });
-  }
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['video_list']) {
-  //     this.dataSource.data = this.video_list;
-  //   }
-
-  //   if (changes['column_name']) {
-  //     this.displayedColumns = [...this.column_name];
-  //   }
-
-  //   if (!this.displayedColumns.includes('actions')) {
-  //     this.displayedColumns.push('actions');
-  //   }
-  // }
-
-  base64Converter(base64: string) {
-    return base64toImage(base64);
   }
 
   ngAfterViewInit(): void {

@@ -7,7 +7,7 @@
     <ng-container matColumnDef="thumbnail">
       <th mat-header-cell *matHeaderCellDef>Video</th>
       <td mat-cell *matCellDef="let row">
-        <img [src]="base64Converter(row.base64EncodedImage)" class="custom_table_video_thumbnail" (click)="watchVideo(row.guid)" />
+        <img [src]="row.base64EncodedImage" class="custom_table_video_thumbnail" (click)="watchVideo(row.guid)" />
       </td>
     </ng-container>
 
