@@ -68,11 +68,6 @@ export class ManageComponent {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   async getUploadedVideos(): Promise<void> {
     try {
       this.activeMatProgressBar();
@@ -83,11 +78,11 @@ export class ManageComponent {
             if (res.status === 200) {
               this.video_data = res.data;
               this.dataSource.data = res.data;
-              // this.dataSource.paginator = this.paginator;
-              // this.dataSource.sort = this.sort;
-
               this.hideMatProgressBar();
             }
+
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
           },
           error: (err) => {
             console.error('Delete failed:', err);
@@ -100,11 +95,11 @@ export class ManageComponent {
             if (res.status === 200) {
               this.video_data = res.data;
               this.dataSource.data = res.data;
-              // this.dataSource.paginator = this.paginator;
-              // this.dataSource.sort = this.sort;
-
               this.hideMatProgressBar();
             }
+
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
           },
           error: (err) => {
             console.error('Delete failed:', err);
