@@ -19,7 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
-export class ManageComponent implements OnInit {
+export class ManageComponent {
   readonly dialog = inject(MatDialog);
   matProgressBarVisible = false;
 
@@ -40,7 +40,16 @@ export class ManageComponent implements OnInit {
     private router: Router,
     private manageVideoService: ManageVideoService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {
+    const segments = this.router.url.split('/');
+    const lastSegment = segments[segments.length - 1];
+
+    if (lastSegment === "deleted-video") {
+      this.page_type = page_type_info.deleted;
+    } else if (lastSegment === "uploaded-video") {
+      this.page_type = page_type_info.uploaded;
+    }
+  }
 
   ngOnInit(): void {
     const segments = this.router.url.split('/');
@@ -59,39 +68,55 @@ export class ManageComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   async getUploadedVideos(): Promise<void> {
     try {
       this.activeMatProgressBar();
 
       if (this.page_type === page_type_info.uploaded) {
-        this.video_data = await firstValueFrom(this.manageVideoService.GetUploadedVideoList());
-      } else if (this.page_type === page_type_info.deleted) {
-        this.video_data = await firstValueFrom(this.manageVideoService.GetDeletedVideoList());
-      }
+        this.manageVideoService.GetUploadedVideoList().subscribe({
+          next: (res) => {
+            if (res.status === 200) {
+              this.video_data = res.data;
+              this.dataSource.data = res.data;
+              // this.dataSource.paginator = this.paginator;
+              // this.dataSource.sort = this.sort;
 
-      if (this.video_data.status === 200) {
-        this.video_data = this.video_data.data;
-        this.updateVideoList();
-      } else {
-        console.error('Unexpected response format:', this.video_data);
-        this.hideMatProgressBar();
+              this.hideMatProgressBar();
+            }
+          },
+          error: (err) => {
+            console.error('Delete failed:', err);
+            this.hideMatProgressBar();
+          }
+        });
+      } else if (this.page_type === page_type_info.deleted) {
+        this.manageVideoService.GetDeletedVideoList().subscribe({
+          next: (res) => {
+            if (res.status === 200) {
+              this.video_data = res.data;
+              this.dataSource.data = res.data;
+              // this.dataSource.paginator = this.paginator;
+              // this.dataSource.sort = this.sort;
+
+              this.hideMatProgressBar();
+            }
+          },
+          error: (err) => {
+            console.error('Delete failed:', err);
+            this.hideMatProgressBar();
+          }
+        });
       }
     } catch (err) {
       console.error('Failed to load videos:', err);
       this.hideMatProgressBar();
     }
   }
-
-  updateVideoList() {
-    this.dataSource.data = this.video_data;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.hideMatProgressBar();
-  }
-
-  // ngAfterViewInit(): void {
-  //   this.dataSource.paginator = this.paginator;
-  // }
 
   editVideo(video: any): void {
     this.router.navigate(['/manage/uploaded-video/edit'], {
@@ -109,7 +134,10 @@ export class ManageComponent implements OnInit {
         next: (res) => {
           if (res.status === 200) {
             this.video_data = this.video_data.filter((video: any) => video.t_video_info_id !== t_video_info_id);
-            this.updateVideoList();
+            this.dataSource.data = this.video_data;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            this.hideMatProgressBar();
           }
         },
         error: (err) => {
@@ -130,7 +158,10 @@ export class ManageComponent implements OnInit {
         next: (res) => {
           if (res?.status === 200) {
             this.video_data = this.video_data.filter((video: any) => video.t_video_info_id !== t_video_info_id);
-            this.updateVideoList();
+            this.dataSource.data = this.video_data;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            this.hideMatProgressBar();
           }
         },
         error: (err) => {

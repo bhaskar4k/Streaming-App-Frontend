@@ -3,7 +3,7 @@
 <div *ngIf="dataSource.data.length === 0" class="nothing_to_show">Nothing to show</div>
 
 <div *ngIf="dataSource.data.length > 0">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
 
     <!-- Thumbnail Column -->
     <ng-container matColumnDef="thumbnail">
