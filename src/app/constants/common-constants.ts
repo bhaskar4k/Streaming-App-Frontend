@@ -15,5 +15,30 @@ export class Dropdown {
   }
 }
 
+export enum VideoVisibility{
+  PUBLIC = 1,
+  PRIVATE = 0
+}
+
+export const VideoVisibilityDescriptions: Record<VideoVisibility, string> = {
+  [VideoVisibility.PUBLIC]: 'Public',
+  [VideoVisibility.PRIVATE]: 'Private',
+};
+
+export enum VideoProcessingStatus {
+  IN_QUEUE = 1,
+  PROCESSING = 2,
+  PROCESSED = 3,
+  PROCESSING_FAILED = 4,
+}
+
+export const VideoProcessingStatusDescriptions: Record<VideoProcessingStatus, string> = {
+  [VideoProcessingStatus.IN_QUEUE]: 'In Queue',
+  [VideoProcessingStatus.PROCESSING]: 'Processing',
+  [VideoProcessingStatus.PROCESSED]: 'Processed',
+  [VideoProcessingStatus.PROCESSING_FAILED]: 'Processing Failed',
+};
+
+
 
 export type ResponseTypeColor = typeof ResponseTypeColor[keyof typeof ResponseTypeColor];

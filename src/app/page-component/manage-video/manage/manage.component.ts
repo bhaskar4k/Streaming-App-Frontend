@@ -6,13 +6,13 @@ import { ManageVideoService } from '../../../service/manage-video/manage-video.s
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
-import { base64toImage } from '../../../utility/common-utils';
+import { base64toImage, GetFormattedCurrentDatetime } from '../../../utility/common-utils';
 import { page_type_info } from '../../../model/video.model';
 import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomAlertComponent } from '../../../common-component/custom-alert/custom-alert.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ResponseTypeColor } from '../../../constants/common-constants';
+import { ResponseTypeColor, VideoProcessingStatus, VideoProcessingStatusDescriptions, VideoVisibility, VideoVisibilityDescriptions } from '../../../constants/common-constants';
 import { faCloudArrowDown, faCircleXmark, faEdit, faTrash, faArrowLeftRotate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -38,6 +38,9 @@ export class ManageComponent {
   faEdit = faEdit;
   faTrash = faTrash;
   faArrowLeftRotate = faArrowLeftRotate;
+
+  VideoVisibility = VideoVisibility;
+  VideoVisibilityDescriptions = VideoVisibilityDescriptions;
 
   video_data: any;
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
@@ -217,6 +220,18 @@ export class ManageComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  getVisibilityDescription(visibility: number): string {
+    return VideoVisibilityDescriptions[visibility as VideoVisibility] || 'Unknown';
+  }
+
+  getVideoProcessingStatusDescriptions(processing_status: number): string {
+    return VideoProcessingStatusDescriptions[processing_status as VideoProcessingStatus] || 'Unknown';
+  }
+
+  getFormattedCurrentDatetimeForVideos(currentTime: string){
+    return GetFormattedCurrentDatetime(new Date(currentTime));
   }
 
   activeMatProgressBar() {
