@@ -60,17 +60,19 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Actions</th>
             <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">
-              <fa-icon [icon]="faCloudArrowDown" class="me-3 cursor_pointer"
+              <fa-icon [icon]="faCloudArrowDown" class="cursor_pointer"
                 *ngIf="page_type === page_type_info.uploaded" title="Download Video"
                 (click)="downloadVideo(row.guid)"></fa-icon>
 
-              <fa-icon [icon]="faEdit" class="me-3 cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
-                title="Edit Video" (click)="editVideo(row)"></fa-icon>
+              <fa-icon [icon]="faEdit" class="cursor_pointer action_btn_margin"
+                *ngIf="page_type === page_type_info.uploaded" title="Edit Video"
+                (click)="editVideo(row)"></fa-icon>
 
-              <fa-icon [icon]="faTrash" class="me-3 cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
-                title="Delete Video" (click)="deleteVideo(row.t_video_info_id)"></fa-icon>
+              <fa-icon [icon]="faTrash" class="cursor_pointer"
+                *ngIf="page_type === page_type_info.uploaded" title="Delete Video"
+                (click)="deleteVideo(row.t_video_info_id)"></fa-icon>
 
-              <fa-icon [icon]="faArrowLeftRotate" class="me-3 cursor_pointer"
+              <fa-icon [icon]="faArrowLeftRotate" class="cursor_pointer"
                 *ngIf="page_type === page_type_info.deleted" title="Restore Deleted Video"
                 (click)="restoreVideo(row.t_video_info_id)"></fa-icon>
             </td>

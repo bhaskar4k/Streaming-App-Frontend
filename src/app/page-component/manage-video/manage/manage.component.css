@@ -27,3 +27,8 @@
 .table_icons{
     width: 1rem;
 }
+
+.action_btn_margin{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
