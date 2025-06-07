@@ -16,7 +16,8 @@
       </div>
 
       <div class="w-100 overflow-auto">
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 border text-center align-middle rounded-3 m-0">
+        <table mat-table [dataSource]="dataSource" matSort
+          class="mat-elevation-z2 border text-center align-middle rounded-3 m-0">
 
           <!-- Thumbnail Column -->
           <ng-container matColumnDef="thumbnail">
@@ -29,7 +30,8 @@
           <!-- Title Column -->
           <ng-container matColumnDef="video_title">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Title</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail" (click)="watchVideo(row.guid)">
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail"
+              (click)="watchVideo(row.guid)">
               {{ row.video_title }}
             </td>
           </ng-container>
@@ -43,37 +45,34 @@
           <!-- Uploaded At -->
           <ng-container matColumnDef="uploaded_at">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Uploaded At</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ row.trans_datetime }}</td>
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ row.trans_datetime }}
+            </td>
           </ng-container>
 
           <!-- Processing Status -->
           <ng-container matColumnDef="processing_status">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Status</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ row.processing_status }}</td>
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ row.processing_status
+              }}</td>
           </ng-container>
 
           <!-- Actions -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Actions</th>
             <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">
-              <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button (click)="downloadVideo(row.guid)"
-                title="Download Video">
-                <img src="./images/download.svg" alt="download" />
-              </button>
-              <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button (click)="editVideo(row)"
-                title="Edit Video">
-                <img src="./images/edit.svg" alt="edit" />
-              </button>
-              <button *ngIf="page_type === page_type_info.uploaded" mat-icon-button
-                (click)="deleteVideo(row.t_video_info_id)" title="Delete Video">
-                <img src="./images/delete.svg" alt="delete" />
-              </button>
+              <fa-icon [icon]="faCloudArrowDown" class="me-3 cursor_pointer"
+                *ngIf="page_type === page_type_info.uploaded" title="Download Video"
+                (click)="downloadVideo(row.guid)"></fa-icon>
 
-              <button *ngIf="page_type === page_type_info.deleted" mat-icon-button
-                (click)="restoreVideo(row.t_video_info_id)" title="Restore Deleted Video">
-                <img src="./images/restore.svg" alt="restore">
-              </button>
+              <fa-icon [icon]="faEdit" class="me-3 cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
+                title="Edit Video" (click)="editVideo(row)"></fa-icon>
 
+              <fa-icon [icon]="faTrash" class="me-3 cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
+                title="Delete Video" (click)="deleteVideo(row.t_video_info_id)"></fa-icon>
+
+              <fa-icon [icon]="faArrowLeftRotate" class="me-3 cursor_pointer"
+                *ngIf="page_type === page_type_info.deleted" title="Restore Deleted Video"
+                (click)="restoreVideo(row.t_video_info_id)"></fa-icon>
             </td>
           </ng-container>
 

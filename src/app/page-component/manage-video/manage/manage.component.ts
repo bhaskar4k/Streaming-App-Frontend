@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomAlertComponent } from '../../../common-component/custom-alert/custom-alert.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ResponseTypeColor } from '../../../constants/common-constants';
-import { faEdit, faCircleXmark, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCloudArrowDown, faCircleXmark, faEdit, faTrash, faArrowLeftRotate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
@@ -33,7 +33,11 @@ export class ManageComponent {
   page_type = page_type_info.wrong;
   page_title = "Wrong";
 
+  faCloudArrowDown = faCloudArrowDown;
   faCircleXmark = faCircleXmark;
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faArrowLeftRotate = faArrowLeftRotate;
 
   video_data: any;
   displayedColumns: string[] = ["thumbnail", "video_title", "visibility", "uploaded_at", "processing_status", "actions"];
