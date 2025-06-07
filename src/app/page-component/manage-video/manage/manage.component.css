@@ -3,7 +3,7 @@
 }
 
 .table_header_background {
-    background-color: var(--light);
+    background-color: var(--light1);
 }
 
 .btn_cursor_pointer {
@@ -31,4 +31,10 @@
 .action_btn_margin{
     margin-left: 0.5rem;
     margin-right: 0.5rem;
+}
+
+.table_custom_class{
+    border-radius: 0.5rem !important;
+    overflow: auto !important;
+    border: 1px solid var(--light1) !important;
 }

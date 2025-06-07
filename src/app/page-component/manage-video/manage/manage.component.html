@@ -3,10 +3,10 @@
 <div class="container w-100 mb-3">
   <h3 class="text-muted mb-3 container_header">Video Management</h3>
 
-  <div class="border p-3 rounded-2" style="background-color: var(--light1);">
+  <div class="border p-3 rounded-3" style="background-color: var(--light1);">
     <h4 class="pb-2 fw-bold" style="color: var(--default-theme);">{{page_title}}</h4>
 
-    <div class="border p-3 rounded-2" style="background-color: var(--white);">
+    <div class="border p-3 rounded-3" style="background-color: var(--white);">
       <div class="d-flex justify-content-between mb-3" style="height: 30px;">
         <input matInput (keyup)="applyFilter($event)" #input class="form-control w-25" placeholder="Search..." />
 
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="w-100 overflow-auto">
+      <div class="w-100 overflow-auto table_custom_class">
         <table mat-table [dataSource]="dataSource" matSort
           class="mat-elevation-z2 border text-center align-middle rounded-3 m-0">
 
