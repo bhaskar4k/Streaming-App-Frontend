@@ -47,7 +47,7 @@
         <small class="form-text text-muted">{{newVideoDescription.length}} / {{maxCharacterDescription}}</small>
     </div>
 
-    <div class="d-flex flex-row align-items-center flex-md-row justify-content-between align-items-start gap-4">
+    <div class="d-flex flex-row align-items-center flex-md-row justify-content-between align-items-start gap-4 w-100">
         <!-- Thumbnail Upload -->
         <div class="border border-dashed p-3 rounded text-center w-50" [class.bg-light]="isThumbnailDragOver"
             (dragover)="onThumbnailDragOver($event)" (dragleave)="onThumbnailDragLeave($event)"
@@ -76,7 +76,8 @@
         </div>
 
         <!-- Switch + Save Button -->
-        <div class="d-flex flex-column align-items-center gap-3 align-items-center border border-dashed p-3 rounded">
+        <div
+            class="d-flex flex-column align-items-center gap-3 align-items-center border border-dashed p-3 rounded w-25">
             <label>Visibility Status</label>
             <div class="form-check form-switch">
                 <input type="checkbox" class="form-check-input" id="video_status_toggle"
@@ -85,11 +86,11 @@
                     {{ videoPublicityStatus === 1 ? 'Public' : 'Private' }}
                 </label>
             </div>
-        </div>
-    </div>
 
-    <div class="d-flex flex-row-reverse mt-3">
-        <button *ngIf="videoUploadSuccess" [disabled]="matProgressBarVisible" class="btn btn-sm btn-primary"
-            (click)="saveVideoInfo()">Save</button>
+            <div class="d-flex flex-row-reverse mt-3">
+                <button *ngIf="videoUploadSuccess" [disabled]="matProgressBarVisible" class="btn btn-sm btn-primary"
+                    (click)="saveVideoInfo()">Save</button>
+            </div>
+        </div>
     </div>
 </div>

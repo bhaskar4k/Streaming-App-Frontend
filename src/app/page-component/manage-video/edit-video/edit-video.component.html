@@ -23,10 +23,10 @@
   </div>
 
   <!-- Thumbnail and Save -->
-  <div class="d-flex flex-column flex-md-row justify-content-between gap-4">
+  <div class="d-flex flex-row align-items-center flex-md-row justify-content-between align-items-start gap-4 w-100">
 
     <!-- Thumbnail Upload -->
-    <div class="border border-dashed rounded p-3 text-center w-100">
+    <div class="border border-dashed rounded p-3 text-center w-50">
       <div *ngIf="!new_thumbnail">
         <p class="fw-bold text-muted">Drop thumbnail here</p>
         <p class="text-muted">or</p>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- Visibility and Save -->
-    <div class="d-flex flex-column align-items-center border border-dashed rounded p-3 gap-3 w-100">
+    <div class="d-flex flex-column align-items-center gap-3 align-items-center border border-dashed p-3 rounded w-25">
       <label class="fw-semibold">Visibility Status</label>
       <div class="form-check form-switch">
         <input type="checkbox" class="form-check-input" id="video_status_toggle"
@@ -65,7 +65,10 @@
         </label>
       </div>
 
-      <button type="button" class="btn btn-primary btn-sm" (click)="saveVideoInfo()">Save</button>
+      <div class="d-flex flex-row-reverse mt-3">
+        <button [disabled]="matProgressBarVisible" class="btn btn-sm btn-primary"
+          (click)="saveVideoInfo()">Save</button>
+      </div>
     </div>
   </div>
 
