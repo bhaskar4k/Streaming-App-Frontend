@@ -9,6 +9,7 @@ import { CustomAlertComponent } from '../../common-component/custom-alert/custom
 import { ResponseTypeColor } from '../../constants/common-constants';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { base64toImage } from '../../utility/common-utils';
 
 @Component({
   selector: 'app-upload',
@@ -29,6 +30,7 @@ export class UploadComponent implements OnInit {
   progress = 0;
   thumbnail: File | null = null;
   thumbnailName = '';
+  new_thumbnail_base64: string | null = null;
   videoInfo: any = null;
   newVideoTitle = '';
   newVideoDescription = '';
@@ -135,12 +137,22 @@ export class UploadComponent implements OnInit {
       this.thumbnailName = file.name;
       this.thumbnail = file;
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const base64Raw = result.split(',')[1]; // Get base64 without metadata
+      this.new_thumbnail_base64 = base64toImage(base64Raw);
+    };
+
+    reader.readAsDataURL(file);
   }
 
   removeThumbnail(event: Event): void {
     event.preventDefault();
     this.thumbnail = null;
     this.thumbnailName = "";
+    this.new_thumbnail_base64 = "";
   }
 
   saveVideoInfo(): void {

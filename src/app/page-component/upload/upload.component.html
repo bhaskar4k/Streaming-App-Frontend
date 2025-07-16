@@ -55,7 +55,13 @@
             <div *ngIf="!thumbnail">
                 <p class="fw-bold text-muted">Drop thumbnail here</p>
                 <p class="text-muted">or</p>
-                <input type="file" accept=".jpg, .jpeg, image/jpeg" (change)="thumbnailSave($event)" class="form-control" required />
+                <input type="file" accept=".jpg, .jpeg, image/jpeg" (change)="thumbnailSave($event)"
+                    class="form-control" required />
+            </div>
+
+            <div *ngIf="new_thumbnail_base64 !== null || new_thumbnail_base64 !== ''"
+                class="w-100 d-flex flex-column align-items-center gap-2">
+                <img [src]="new_thumbnail_base64" class="img-fluid rounded mb-3 w-25" />
             </div>
 
             <div *ngIf="thumbnail" class="d-flex flex-column align-items-center gap-2">

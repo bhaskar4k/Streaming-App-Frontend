@@ -97,6 +97,7 @@ export class EditVideoComponent implements OnInit {
     event.preventDefault();
     this.new_thumbnail = null;
     this.thumbnail_name = '';
+    this.new_thumbnail_base64 = "";
   }
 
   openAlertModal(header: string, body: string, color: string) {
