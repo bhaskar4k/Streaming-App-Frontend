@@ -1,7 +1,8 @@
 <mat-progress-bar mode="indeterminate" *ngIf="matProgressBarVisible" class="matProgressBar"></mat-progress-bar>
 
 <div class="container">
-  <h3 class="text-muted mb-3 container_header">Edit - {{ video_title }}</h3>
+  <h3 *ngIf="video_title !== null && video_title !== ''" class="text-muted mb-3 container_header">Editing - {{ video_title }}</h3>
+  <h3 *ngIf="video_title === null || video_title === ''" class="text-muted mb-3 container_header">Edit</h3>
 
   <!-- Title -->
   <div class="mb-4">
