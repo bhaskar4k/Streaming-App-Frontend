@@ -35,4 +35,8 @@ export class ManageVideoService {
   DoRestoreVideo(t_video_info_id: number): Observable<any> {
     return this.http.post(this.BASE_URL + EndpointUpload.restore_video, { t_video_info_id });
   }
+
+  DoGetASingleVideoInfo(guid: string | null): Observable<any> {
+    return this.http.get(this.BASE_URL + EndpointUpload.get_a_single_video_info + "/" + guid);
+  }
 }

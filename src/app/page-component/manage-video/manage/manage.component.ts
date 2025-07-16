@@ -120,12 +120,7 @@ export class ManageComponent {
   }
 
   editVideo(video: any): void {
-    this.router.navigate([`/manage/uploaded-video/edit/${video.guid}`], {
-      state: {
-        ...video,
-        old_thumbnail: video.base64EncodedImage
-      }
-    });
+    this.router.navigate([`/manage/uploaded-video/edit/${video.guid}`]);
   }
 
   async deleteVideo(t_video_info_id: number) {

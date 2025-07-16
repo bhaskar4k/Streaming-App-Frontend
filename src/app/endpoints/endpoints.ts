@@ -30,6 +30,7 @@ let EndpointUpload = {
     download_video: "/manage_video/download_video",
     get_deleted_video_list: "/manage_video/get_deleted_video_list",
     restore_video: "/manage_video/restore_video",
+    get_a_single_video_info: "/manage_video/get_a_single_video_info",
 }
 
 let EndpointWebsocket = {

@@ -11,6 +11,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { base64toImage } from '../../../utility/common-utils';
+import { ManageVideoService } from '../../../service/manage-video/manage-video.service';
 
 @Component({
   selector: 'app-edit-video',
@@ -22,6 +23,7 @@ import { base64toImage } from '../../../utility/common-utils';
 export class EditVideoComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   matProgressBarVisible = false;
+  matProgressBarVisible1 = false;
 
   maxCharacterTitle = 100;
   maxCharacterDescription = 5000;
@@ -52,22 +54,44 @@ export class EditVideoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private uploadService: UploadService,
+    private manageVideoService: ManageVideoService,
     private location: Location,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    const state = history.state;
-    this.t_video_info_id = state.t_video_info_id;
-    this.guid = state.guid;
-    this.video_title = state.video_title;
-    this.old_thumbnail = state.old_thumbnail;
-    this.video_description = state.video_description;
-    this.is_public = state.is_public;
+    this.guid = this.route.snapshot.paramMap.get('guid') || '';
 
-    this.edited_video_title = this.video_title;
-    this.edited_video_description = this.video_description;
-    this.video_pubblicity_status = this.is_public;
+    this.GetVideoInfo();
+  }
+
+  GetVideoInfo() {
+    this.activeMatProgressBar1();
+
+    this.manageVideoService.DoGetASingleVideoInfo(this.guid)
+      .subscribe({
+        next: (result: any) => {
+          this.hideMatProgressBar1();
+
+          if (result.status === 200) {
+            this.t_video_info_id = result.data.t_video_info_id;
+            this.video_title = result.data.video_title;
+            this.old_thumbnail = result.data.base64EncodedImage;
+            this.video_description = result.data.video_description;
+            this.is_public = result.data.is_public;
+
+            this.edited_video_title = result.data.video_title;
+            this.edited_video_description = result.data.video_description;
+            this.video_pubblicity_status = result.data.is_public;
+          } else {
+            this.openDialog('Upload', result.message, ResponseTypeColor.ERROR, null);
+          }
+        },
+        error: () => {
+          this.hideMatProgressBar1();
+          this.openDialog('Upload', "Failed to upload video info.", ResponseTypeColor.ERROR, null);
+        }
+      });
   }
 
   handleVideoStatusToggleSwitch() {
@@ -133,6 +157,7 @@ export class EditVideoComponent implements OnInit {
 
             if (result.status === 200) {
               this.openDialog('Upload', result.message, ResponseTypeColor.SUCCESS, null);
+              this.GetVideoInfo();
             } else {
               this.openDialog('Upload', result.message, ResponseTypeColor.ERROR, null);
             }
@@ -159,6 +184,16 @@ export class EditVideoComponent implements OnInit {
 
   hideMatProgressBar() {
     this.matProgressBarVisible = false;
+    this.cdr.detectChanges();
+  }
+
+  activeMatProgressBar1() {
+    this.matProgressBarVisible1 = true;
+    this.cdr.detectChanges();
+  }
+
+  hideMatProgressBar1() {
+    this.matProgressBarVisible1 = false;
     this.cdr.detectChanges();
   }
 
