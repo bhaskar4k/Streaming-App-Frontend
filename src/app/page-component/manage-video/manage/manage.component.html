@@ -39,20 +39,23 @@
           <!-- Visibility -->
           <ng-container matColumnDef="visibility">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Visibility</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ getVisibilityDescription(row.is_public) }}</td>
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{
+              getVisibilityDescription(row.is_public) }}</td>
           </ng-container>
 
           <!-- Uploaded At -->
           <ng-container matColumnDef="uploaded_at">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Uploaded At</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ getFormattedCurrentDatetimeForVideos(row.trans_datetime) }}
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{
+              getFormattedCurrentDatetimeForVideos(row.trans_datetime) }}
             </td>
           </ng-container>
 
           <!-- Processing Status -->
           <ng-container matColumnDef="processing_status">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Status</th>
-            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{ getVideoProcessingStatusDescriptions(row.processing_status)
+            <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">{{
+              getVideoProcessingStatusDescriptions(row.processing_status)
               }}</td>
           </ng-container>
 
@@ -60,21 +63,17 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="text-center fw-bold table_header_background">Actions</th>
             <td mat-cell *matCellDef="let row" class="text-center custom_table_video_thumbnail">
-              <fa-icon [icon]="faCloudArrowDown" class="cursor_pointer"
-                *ngIf="page_type === page_type_info.uploaded" title="Download Video"
-                (click)="downloadVideo(row.guid)"></fa-icon>
+              <fa-icon [icon]="faCloudArrowDown" class="cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
+                title="Download Video" (click)="downloadVideo(row.guid)"></fa-icon>
 
               <fa-icon [icon]="faEdit" class="cursor_pointer action_btn_margin"
-                *ngIf="page_type === page_type_info.uploaded" title="Edit Video"
-                (click)="editVideo(row)"></fa-icon>
+                *ngIf="page_type === page_type_info.uploaded" title="Edit Video" (click)="editVideo(row)"></fa-icon>
 
-              <fa-icon [icon]="faTrash" class="cursor_pointer"
-                *ngIf="page_type === page_type_info.uploaded" title="Delete Video"
-                (click)="deleteVideo(row.t_video_info_id)"></fa-icon>
+              <fa-icon [icon]="faTrash" class="cursor_pointer" *ngIf="page_type === page_type_info.uploaded"
+                title="Delete Video" (click)="deleteVideo(row.t_video_info_id)"></fa-icon>
 
-              <fa-icon [icon]="faArrowLeftRotate" class="cursor_pointer"
-                *ngIf="page_type === page_type_info.deleted" title="Restore Deleted Video"
-                (click)="restoreVideo(row.t_video_info_id)"></fa-icon>
+              <fa-icon [icon]="faArrowLeftRotate" class="cursor_pointer" *ngIf="page_type === page_type_info.deleted"
+                title="Restore Deleted Video" (click)="restoreVideo(row.t_video_info_id)"></fa-icon>
             </td>
           </ng-container>
 

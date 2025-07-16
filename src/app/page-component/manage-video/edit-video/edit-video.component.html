@@ -1,1 +1,76 @@
-<p>edit-video works!</p>
+<mat-progress-bar mode="indeterminate" *ngIf="matProgressBarVisible" class="matProgressBar"></mat-progress-bar>
+
+<div class="container">
+  <h3 class="text-muted mb-3 container_header">Edit - {{ video_title }}</h3>
+
+  <!-- Title -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold">Video Title<span class="text-danger">*</span></label>
+    <div class="input-group">
+      <input type="text" class="form-control" maxlength="{{ maxCharacterTitle }}" [(ngModel)]="edited_video_title" />
+    </div>
+    <small class="form-text text-muted">{{ edited_video_title.length }}/{{ maxCharacterTitle }}</small>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold">Video Description<span class="text-danger">*</span></label>
+    <div class="input-group">
+      <textarea class="form-control" rows="5" maxlength="{{ maxCharacterDescription }}"
+        [(ngModel)]="edited_video_description"></textarea>
+    </div>
+    <small class="form-text text-muted">{{ edited_video_description.length }}/{{ maxCharacterDescription }}</small>
+  </div>
+
+  <!-- Thumbnail and Save -->
+  <div class="d-flex flex-column flex-md-row justify-content-between gap-4">
+
+    <!-- Thumbnail Upload -->
+    <div class="border border-dashed rounded p-3 text-center w-100">
+      <div *ngIf="!new_thumbnail">
+        <p class="fw-bold text-muted">Drop thumbnail here</p>
+        <p class="text-muted">or</p>
+      </div>
+
+      <div *ngIf="!new_thumbnail && old_thumbnail" class="w-100 d-flex flex-column align-items-center gap-2">
+        <img [src]="old_thumbnail" class="img-fluid rounded mb-3 w-25" />
+      </div>
+
+      <div *ngIf="new_thumbnail" class="w-100 d-flex flex-column align-items-center gap-2">
+        <img [src]="new_thumbnail_base64" class="img-fluid rounded mb-3 w-25" />
+      </div>
+
+      <input type="file" accept=".jpg, .jpeg, image/jpeg" (change)="thumbnailSave($event)" *ngIf="!new_thumbnail"
+        class="form-control w-auto mx-auto" />
+
+      <div *ngIf="new_thumbnail" class="d-flex flex-column align-items-center gap-2">
+        <span class="text-success">{{thumbnail_name}}</span>
+        <div class="d-flex flex-row-reverse w-100">
+          <button class="btn btn-outline-secondary btn-sm" (click)="removeThumbnail($event)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visibility and Save -->
+    <div class="d-flex flex-column align-items-center border border-dashed rounded p-3 gap-3 w-100">
+      <label class="fw-semibold">Visibility Status</label>
+      <div class="form-check form-switch">
+        <input type="checkbox" class="form-check-input" id="video_status_toggle"
+          (change)="handleVideoStatusToggleSwitch()" [checked]="video_pubblicity_status === 1" />
+        <label class="form-check-label" for="video_status_toggle">
+          {{ video_pubblicity_status === 1 ? 'Public' : 'Private' }}
+        </label>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-sm" (click)="saveVideoInfo()">Save</button>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="mt-4">
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="goBack()">Go Back</button>
+  </div>
+</div>

@@ -35,6 +35,10 @@ export class UploadService {
     );
   }
 
+  DoUpdateVideoInfo(obj: any): Observable<any> {
+    return this.http.post(this.BASE_URL + EndpointUpload.update_video_info, obj);
+  }
+
   DoUploadVideoInfo(formData: FormData): Observable<any> {
     return this.http.post(this.BASE_URL + EndpointUpload.upload_video_info, formData);
   }

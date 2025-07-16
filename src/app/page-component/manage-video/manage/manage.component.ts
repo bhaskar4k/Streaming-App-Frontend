@@ -123,7 +123,7 @@ export class ManageComponent {
     this.router.navigate(['/manage/uploaded-video/edit'], {
       state: {
         ...video,
-        old_thumbnail: video.thumbnail
+        old_thumbnail: video.base64EncodedImage
       }
     });
   }
@@ -230,7 +230,7 @@ export class ManageComponent {
     return VideoProcessingStatusDescriptions[processing_status as VideoProcessingStatus] || 'Unknown';
   }
 
-  getFormattedCurrentDatetimeForVideos(currentTime: string){
+  getFormattedCurrentDatetimeForVideos(currentTime: string) {
     return GetFormattedCurrentDatetime(new Date(currentTime));
   }
 
