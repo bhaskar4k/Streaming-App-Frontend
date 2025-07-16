@@ -21,7 +21,7 @@ export const routes: Routes = [
     { path: 'upload', component: UploadComponent },
     { path: 'manage/uploaded-video', component: ManageComponent },
     { path: 'manage/deleted-video', component: ManageComponent },
-    { path: 'manage/uploaded-video/edit', component: EditVideoComponent },
+    { path: 'manage/uploaded-video/edit/:guid', component: EditVideoComponent },
     { path: 'watch', component: WatchVideoComponent },
     { path: 'logout', component: LogoutComponent },
     { path: '**', component: ErrorComponent },
