@@ -9,7 +9,7 @@
 <h3 style="border-bottom: 2px solid black;">Get Started</h3>
 <ul>
     <li><code><b>$ git clone https://github.com/bhaskar4k/Streaming-App-Frontend.git</b></code></li>
-    <li><code><b>$ cd eduCare_frontEnd</b></code></li>
+    <li><code><b>$ cd Streaming-App-Frontend</b></code></li>
     <li><code><b>$ npm i</b></code></li>
     <li><code><b>$ npm install -g @angular/cli</b></code></li>
     <li><code><b>$ ng serve / ng serve -o</b></code></li>
