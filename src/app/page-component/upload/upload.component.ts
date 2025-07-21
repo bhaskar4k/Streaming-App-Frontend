@@ -35,13 +35,11 @@ export class UploadComponent implements OnInit {
   newVideoTitle = '';
   newVideoDescription = '';
 
+  tagInput: string = '';
+  tags: string[] = [];
+
   maxCharacterTitle = 100;
   maxCharacterDescription = 5000;
-
-  showAlertModal = false;
-  headerTextOfAlertModal: string | null = null;
-  bodyTextOfAlertModal: string | null = null;
-  colorOfAlertModal = 'green';
 
   isDragOver: boolean = false;
   isThumbnailDragOver: boolean = false;
@@ -52,6 +50,25 @@ export class UploadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { }
+
+  onInputChange(): void {
+    if (this.tagInput.length > 500) {
+      this.tagInput = this.tagInput.slice(0, 500);
+    }
+    this.updateTagsFromInput();
+  }
+
+  updateTagsFromInput(): void {
+    this.tags = this.tagInput
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
+  }
+
+  removeTag(index: number): void {
+    this.tags.splice(index, 1);
+    this.tagInput = this.tags.join(', ');
+  }
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
