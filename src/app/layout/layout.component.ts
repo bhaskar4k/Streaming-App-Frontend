@@ -22,16 +22,15 @@ import { CustomConfirmDialogComponent } from '../common-component/custom-confirm
     trigger('submenuToggle', [
       state('collapsed', style({
         height: '0px',
-        // overflow: 'hidden',
-        opacity: 0
+        opacity: 0,
+        overflow: 'hidden',
       })),
       state('expanded', style({
         height: '*',
-        opacity: 1
+        opacity: 1,
+        overflow: 'hidden',
       })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease-in-out')
-      ])
+      transition('collapsed <=> expanded', animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ])
   ]
 })
@@ -104,7 +103,7 @@ export class LayoutComponent implements OnInit {
       const item = document.getElementById(`menu_${id}`);
       if (item) {
         item.style.backgroundColor = "#212529";
-        item.style.padding = "0rem 0rem";
+        // item.style.padding = "0rem 0rem";
       }
     }
   };
@@ -122,7 +121,7 @@ export class LayoutComponent implements OnInit {
       let item = document.getElementById(`menu_${menu.id}`);
       if (item) {
         item.style.backgroundColor = "var(--bootstrap-bg-dark-light)";
-        item.style.padding = "0.5rem 1rem";
+        // item.style.padding = "0.5rem 1rem";
       }
 
       if (menu.route_name === "/logout") {

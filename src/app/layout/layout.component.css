@@ -25,6 +25,7 @@
     transition: 0.3s all ease-in-out;
     border-radius: 0.5rem;
     margin: 0.3rem 0;
+    padding: 0.3rem 1rem;
 }
 
 .custom_menu_item{
