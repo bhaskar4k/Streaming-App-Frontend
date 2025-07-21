@@ -95,11 +95,15 @@ export class EditVideoComponent implements OnInit {
             this.video_title = result.data.video_title;
             this.old_thumbnail = result.data.base64EncodedImage;
             this.video_description = result.data.video_description;
+            this.tagInput = result.data.tags;
             this.is_public = result.data.is_public;
 
             this.edited_video_title = result.data.video_title;
             this.edited_video_description = result.data.video_description;
             this.video_pubblicity_status = result.data.is_public;
+
+            this.onInputChange();
+            this.updateTagsFromInput();
           } else {
             this.openDialog('Upload', result.message, ResponseTypeColor.ERROR, null);
           }
