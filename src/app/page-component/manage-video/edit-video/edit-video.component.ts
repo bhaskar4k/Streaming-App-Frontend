@@ -36,6 +36,9 @@ export class EditVideoComponent implements OnInit {
   old_thumbnail: string = '';
   video_description: string = '';
   is_public: number = 0;
+  
+  tagInput: string = '';
+  tags: string[] = [];
 
   new_thumbnail: File | null = null;
   new_thumbnail_base64: string | null = null;
@@ -44,11 +47,6 @@ export class EditVideoComponent implements OnInit {
 
   edited_video_title: string = '';
   edited_video_description: string = '';
-
-  showAlertModal = false;
-  headerTextOfAlertModal: string | null = null;
-  bodyTextOfAlertModal: string | null = null;
-  colorOfAlertModal: string = 'green';
 
   constructor(
     private route: ActivatedRoute,
@@ -63,6 +61,25 @@ export class EditVideoComponent implements OnInit {
     this.guid = this.route.snapshot.paramMap.get('guid') || '';
 
     this.GetVideoInfo();
+  }
+
+  onInputChange(): void {
+    if (this.tagInput.length > 500) {
+      this.tagInput = this.tagInput.slice(0, 500);
+    }
+    this.updateTagsFromInput();
+  }
+
+  updateTagsFromInput(): void {
+    this.tags = this.tagInput
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
+  }
+
+  removeTag(index: number): void {
+    this.tags.splice(index, 1);
+    this.tagInput = this.tags.join(', ');
   }
 
   GetVideoInfo() {
@@ -124,24 +141,13 @@ export class EditVideoComponent implements OnInit {
     this.new_thumbnail_base64 = "";
   }
 
-  openAlertModal(header: string, body: string, color: string) {
-    this.headerTextOfAlertModal = header;
-    this.bodyTextOfAlertModal = body;
-    this.colorOfAlertModal = color;
-    this.showAlertModal = true;
-
-    setTimeout(() => {
-      this.showAlertModal = false;
-      this.router.navigate(['/manage/uploaded-video']);
-    }, 5000);
-  }
-
   async saveVideoInfo() {
     const formData = new FormData();
     formData.append('t_video_info_id', this.t_video_info_id);
     formData.append('guid', this.guid);
     formData.append('title', this.edited_video_title);
     formData.append('description', this.edited_video_description);
+    formData.append("tags", this.tags.join(', '));
     formData.append('is_public', this.video_pubblicity_status.toString());
     if (this.new_thumbnail) {
       formData.append('thumbnail', this.new_thumbnail);

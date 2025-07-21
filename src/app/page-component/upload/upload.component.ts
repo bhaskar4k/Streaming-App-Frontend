@@ -177,6 +177,7 @@ export class UploadComponent implements OnInit {
     formData.append("title", this.newVideoTitle);
     formData.append("description", this.newVideoDescription);
     formData.append("is_public", this.videoPublicityStatus.toString());
+    formData.append("tags", this.tags.join(', '));
     if (this.thumbnail) formData.append("thumbnail", this.thumbnail);
     formData.append("video_info", JSON.stringify(this.videoInfo));
 
