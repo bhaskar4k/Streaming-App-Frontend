@@ -17,7 +17,7 @@ let EndpointDashboard = {
 }
 
 let EndpointStreaming = {
-    get_video_information: "/streaming/get_video_information",
+    get_video_information_for_streaming: "/streaming/get_video_information_for_streaming",
 }
 
 let EndpointUpload = {

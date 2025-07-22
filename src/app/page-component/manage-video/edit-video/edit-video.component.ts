@@ -110,7 +110,7 @@ export class EditVideoComponent implements OnInit {
         },
         error: () => {
           this.hideMatProgressBar1();
-          this.openDialog('Upload', "Failed to upload video info.", ResponseTypeColor.ERROR, null);
+          this.openDialog('Upload', "Failed to fetch video info.", ResponseTypeColor.ERROR, null);
         }
       });
   }
@@ -174,12 +174,12 @@ export class EditVideoComponent implements OnInit {
           },
           error: () => {
             this.hideMatProgressBar();
-            this.openDialog('Upload', "Failed to upload video info.", ResponseTypeColor.ERROR, null);
+            this.openDialog('Upload', "Failed to update video info.", ResponseTypeColor.ERROR, null);
           }
         });
     } catch (error) {
       this.hideMatProgressBar();
-      this.openDialog('Upload', "Failed to upload video info.", ResponseTypeColor.ERROR, null);
+      this.openDialog('Upload', "Failed to update video info.", ResponseTypeColor.ERROR, null);
     }
   }
 
