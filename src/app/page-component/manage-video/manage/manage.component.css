@@ -1,5 +1,9 @@
+.thumbnail_header_table{
+    width: 144px;
+}
+
 .custom_table_video_thumbnail{
-    height: 4rem;
+    height: 81px;
 }
 
 .table_header_background {
