@@ -205,7 +205,9 @@ export class ManageComponent {
   }
 
   watchVideo(guid: string): void {
-    this.router.navigate(['/watch'], { queryParams: { v: guid, playback: 0 } });
+    if(this.page_type === page_type_info.uploaded){
+      this.router.navigate(['/watch'], { queryParams: { v: guid, playback: 0 } });
+    }
   }
 
   addVideo(): void {
