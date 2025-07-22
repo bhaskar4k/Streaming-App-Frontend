@@ -66,7 +66,7 @@
       </div>
 
       <input type="file" accept=".jpg, .jpeg, image/jpeg" (change)="thumbnailSave($event)" *ngIf="!new_thumbnail"
-        class="form-control w-auto mx-auto" />
+        class="form-control w-100" />
 
       <div *ngIf="new_thumbnail" class="d-flex flex-column align-items-center gap-2">
         <span class="text-success">{{thumbnail_name}}</span>
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Visibility and Save -->
-    <div class="d-flex flex-column align-items-center gap-3 align-items-center border border-dashed p-3 rounded w-25">
+    <div class="d-flex flex-column align-items-center gap-3 align-items-center border border-dashed p-3 rounded w-50 w-lg-25">
       <label class="fw-semibold">Visibility Status</label>
       <div class="form-check form-switch">
         <input type="checkbox" class="form-check-input" id="video_status_toggle"
