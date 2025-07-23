@@ -53,7 +53,7 @@ export class WatchVideoComponent {
         },
         error: () => {
           this.hideMatProgressBar();
-          this.openDialog('Upload', "Failed to upload video info.", ResponseTypeColor.ERROR, null);
+          this.openDialog('Upload', "Failed to fetch video info.", ResponseTypeColor.ERROR, null);
         }
       });
   }
