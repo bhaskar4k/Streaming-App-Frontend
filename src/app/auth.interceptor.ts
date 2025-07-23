@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthenticationService } from './service/authentication/authentication.service';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { EMPTY, throwError } from 'rxjs';
 import { CustomAlertComponent } from './common-component/custom-alert/custom-alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ResponseTypeColor } from './constants/common-constants';
@@ -19,8 +19,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(clonedRequest).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        console.log("error",error);
-        openDialog('Upload', error.error.message, ResponseTypeColor.ERROR, "login");
+        openDialog('Logout', error.error.message, ResponseTypeColor.ERROR, "login");
+        return EMPTY;
       }
 
       return throwError(() => error);
