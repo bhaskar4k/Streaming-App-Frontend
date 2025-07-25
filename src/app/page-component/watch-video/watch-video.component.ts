@@ -4,10 +4,13 @@ import { StreamingService } from '../../service/streaming/streaming.service';
 import { CustomAlertComponent } from '../../common-component/custom-alert/custom-alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ResponseTypeColor } from '../../constants/common-constants';
+import { CustomVideoPlayerComponent } from '../../common-component/custom-video-player/custom-video-player.component';
 
 @Component({
   selector: 'app-watch-video',
-  imports: [],
+  imports: [
+    CustomVideoPlayerComponent
+  ],
   templateUrl: './watch-video.component.html',
   styleUrl: './watch-video.component.css'
 })
