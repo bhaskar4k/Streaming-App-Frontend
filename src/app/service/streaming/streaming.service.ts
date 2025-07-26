@@ -16,9 +16,9 @@ export class StreamingService {
     return this.http.get(this.BASE_URL + EndpointStreaming.get_video_information_for_streaming + "/" + guid);
   }
 
-  GetVideoChunks(guid: string, index: number): Observable<Blob[]> {
+  GetVideoChunks(guid: string, index: number): Observable<Blob> {
     return this.http.get(`${this.BASE_URL}/${"streaming/get_video_file_chunks_in_batch"}/${guid}/${index}`, {
-      responseType: 'json'
-    }) as Observable<Blob[]>;
+      responseType: 'blob'  // Important: expect binary Blob
+    });
   }
 }

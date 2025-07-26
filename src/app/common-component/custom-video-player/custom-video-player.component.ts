@@ -13,6 +13,8 @@ export class CustomVideoPlayerComponent implements AfterViewInit {
   @Input() video_info: any = null;
   @Input() posterSrc: string | null = null;
 
+  chunk_count: number = 0;
+
   @ViewChild('videoPlayer') videoRef!: ElementRef<HTMLVideoElement>;
 
   currentChunk = -1;
@@ -22,12 +24,17 @@ export class CustomVideoPlayerComponent implements AfterViewInit {
 
   ngOnInit(): void {
     console.log(this.guid, "OnInit");
+    console.log(this.video_info, "OnInit");
+
+    this.chunk_count = this.video_info.chunkCount;
+
+    this.loadChunks(1);
   }
 
   ngAfterViewInit(): void {
-    const video = this.videoRef.nativeElement;
-    video.addEventListener('timeupdate', () => this.checkAndLoadChunks(video));
-    this.loadChunks(1);
+    // const video = this.videoRef.nativeElement;
+    // video.addEventListener('timeupdate', () => this.checkAndLoadChunks(video));
+    // this.loadChunks(1);
   }
 
   private checkAndLoadChunks(video: HTMLVideoElement) {
@@ -44,26 +51,10 @@ export class CustomVideoPlayerComponent implements AfterViewInit {
   }
 
   private loadChunks(index: number) {
-    const toLoad = [index, index + 1, index + 2].filter(i => !this.chunkCache.has(i));
-    if (toLoad.length === 0) return;
-
-    this.streamingService.GetVideoChunks(this.guid, index).subscribe((chunkList: any[]) => {
-      chunkList.forEach((base64: string, i: number) => {
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let j = 0; j < binary.length; j++) {
-          bytes[j] = binary.charCodeAt(j);
-        }
-
-        const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'video/mp4' }));
-        const chunkIndex = index + i;
-        this.chunkCache.set(chunkIndex, blobUrl);
-
-        if (chunkIndex === index && !this.videoRef.nativeElement.src) {
-          this.videoRef.nativeElement.src = blobUrl;
-          this.videoRef.nativeElement.play();
-        }
-      });
+    this.streamingService.GetVideoChunks(this.guid, index).subscribe((blob: Blob) => {
+      const blobUrl = URL.createObjectURL(blob);
+      this.videoRef.nativeElement.src = blobUrl;
+      this.videoRef.nativeElement.play();
     });
   }
 }
