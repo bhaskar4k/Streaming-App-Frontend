@@ -1,0 +1,62 @@
+.video-wrapper {
+  border-radius: 1rem;
+  margin-top: 0.7rem !important;
+}
+
+.video-border {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #000;
+  overflow: hidden;
+  height: max-content;
+}
+
+.description_style {
+    background-color: rgb(216, 216, 216);
+    border-radius: 0.6rem;
+}
+
+.color_custom {
+    color: var(--bootstrap-bg-dark-light);
+}
+
+.like_dislike_title_div{
+    margin-top: 0.7rem;
+}
+
+.like_dislike_button {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #dcdcdc;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.like_dislike_button:hover {
+  background-color: #eee;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.like-icon, .dislike-icon {
+  color: #606060;
+  transition: color 0.2s ease;
+}
+
+.like_dislike_button:hover .like-icon {
+  color: #3ea800;
+}
+
+
+.like_dislike_button:hover .dislike-icon {
+  color: #cc0000;
+}
+
+.show_more_font{
+    font-weight: 600;
+}

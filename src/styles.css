@@ -121,3 +121,12 @@ body {
 .mat_table_header_font_size{
     font-size: 1rem;
 }
+
+.mat-mdc-tooltip-show {
+    background-color: #2c2d36 !important;
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+}
