@@ -6,9 +6,10 @@
   </div>
 
   <div class="w-75">
-    <div class="d-flex justify-content-between align-items-center like_dislike_title_div">
-      <span class="fs-5 fw-bold color_custom">{{ video_info.title }}</span>
-      <div>
+    <div class="d-flex justify-content-between align-items-start w-100 like_dislike_title_div">
+      <span class="fs-5 fw-bold color_custom w-75">{{ video_info.title }}</span>
+
+      <div class="like-dislike-buttons d-flex justify-content-end">
         <button class="like_dislike_button me-2" matTooltip="Like" matTooltipPosition="below"
           matTooltipClass="custom-tooltip">
           <fa-icon [icon]="faHeart" class="me-2 like-icon"></fa-icon>
@@ -22,9 +23,10 @@
       </div>
     </div>
 
+
     <div class="d-flex align-items-center">
       <fa-icon [icon]="faCircleUser" class="me-2 fa-2x"></fa-icon>
-      <span class="p-0 m-0 color_custom me-2">{{video_info.channel}}</span>
+      <span class="p-0 m-0 color_custom me-2 fw-bold">{{video_info.channel}}</span>
 
       <button class="btn btn-secondary btn-sm" matTooltip="Subscribe" matTooltipPosition="above">Join</button>
     </div>
