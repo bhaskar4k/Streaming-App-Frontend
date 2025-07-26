@@ -7,7 +7,7 @@
 
   <div class="w-75">
     <div class="d-flex justify-content-between align-items-start w-100 like_dislike_title_div">
-      <span class="fs-5 fw-bold color_custom w-75">{{ video_info.title }}</span>
+      <span class="fs-5 color_custom w-75">{{ video_info.title }}</span>
 
       <div class="like-dislike-buttons d-flex justify-content-end">
         <button class="like_dislike_button me-2" matTooltip="Like" matTooltipPosition="below"
@@ -36,8 +36,8 @@
       <br>
       <span *ngIf="video_description.length<=200" class="color_custom">{{ video_description }}</span>
       <span *ngIf="video_description.length>200" class="color_custom">{{ video_description
-        }} <span class="show_more_font cursor_pointer"
-          (click)="ShowMoreDescription()">{{video_description_show_text}}</span></span>
+        }} <span class="show_more_font cursor_pointer" [innerHTML]="video_description_show_text"
+          (click)="ShowMoreDescription()"></span></span>
     </div>
   </div>
 </div>

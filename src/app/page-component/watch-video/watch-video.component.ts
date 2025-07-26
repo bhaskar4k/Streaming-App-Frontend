@@ -41,7 +41,8 @@ export class WatchVideoComponent {
 
   video_info: any = {};
   video_description: string = '';
-  video_description_show_text: string = 'More';
+  video_description_show_text: string = '&nbsp;More';
+  show_more: boolean = true;
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
@@ -79,12 +80,14 @@ export class WatchVideoComponent {
   }
 
   ShowMoreDescription() {
-    if (this.video_description_show_text === 'More') {
-      this.video_description_show_text = 'Less';
+    if (this.show_more === true) {
+      this.video_description_show_text = '&nbsp;Less';
       this.video_description = this.video_info.description;
+      this.show_more = false;
     } else {
-      this.video_description_show_text = 'More';
+      this.video_description_show_text = '&nbsp;More';
       this.video_description = this.video_info.description.substring(0, 200) + '...';
+      this.show_more = true;
     }
 
   }
