@@ -9,7 +9,8 @@ import { StreamingService } from '../../service/streaming/streaming.service';
   styleUrls: ['./custom-video-player.component.css']
 })
 export class CustomVideoPlayerComponent implements AfterViewInit {
-  @Input() guid: string = '';          // Required: Folder name or ID
+  @Input() guid: string = '';
+  @Input() video_info: any = null;
   @Input() posterSrc: string | null = null;
 
   @ViewChild('videoPlayer') videoRef!: ElementRef<HTMLVideoElement>;
