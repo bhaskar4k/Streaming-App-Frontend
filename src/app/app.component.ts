@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WebSocketLoginHandlerService } from './service/web-socket-login-handler/web-socket-login-handler.service';
 import { Router } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { CommonModule } from '@angular/common';
@@ -12,12 +11,11 @@ import { AuthenticationService } from './service/authentication/authentication.s
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   IsLoggedIn = false;
   title = "Streaming App";
 
   constructor(
-    private wsService: WebSocketLoginHandlerService,
     private router: Router,
     private authService: AuthenticationService,
   ) { }
@@ -26,10 +24,5 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn()) {
       this.IsLoggedIn = true;
     }
-    this.wsService.setupWebSocket();
-  }
-
-  ngOnDestroy() {
-    this.wsService.disconnect();
   }
 }
